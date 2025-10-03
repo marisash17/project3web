@@ -76,7 +76,7 @@
 
             <div class="mb-3">
                 <label class="form-label fw-bold">No. Handphone:</label>
-                <input type="text" name="no_hp" class="form-control form-control-custom" value="{{ old('no_hp', $customer->no_hp) }}" required>
+                <input type="text" name="no_telepon" class="form-control form-control-custom" value="{{ old('no_hp', $customer->no_hp) }}" required>
             </div>
 
             <div class="mb-3">

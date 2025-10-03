@@ -72,7 +72,7 @@
             </div>
             <div class="mb-3">
                 <label class="form-label fw-bold">No. Handphone:</label>
-                <input type="text" name="no_hp" class="form-control form-control-custom" required>
+                <input type="text" name="no_telepon" class="form-control form-control-custom" required>
             </div>
             <div class="mb-3">
     <label class="form-label fw-bold">Jenis Kelamin:</label>

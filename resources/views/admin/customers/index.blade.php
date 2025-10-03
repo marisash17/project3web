@@ -117,7 +117,7 @@
                         <td>{{ ($customers->currentPage() - 1) * $customers->perPage() + $loop->iteration }}</td>
                         <td>{{ $customer->nama }}</td>
                         <td>{{ $customer->alamat }}</td>
-                        <td>{{ $customer->no_hp }}</td>
+                        <td>{{ $customer->no_telepon }}</td>
                         <td>{{ $customer->jenis_kelamin }}</td>
                         <td>{{ $customer->email }}</td>
                         <td>

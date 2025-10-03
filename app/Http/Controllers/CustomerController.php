@@ -2,25 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Models\Customer;
 use Illuminate\Http\Request;
 
 class CustomerController extends Controller
 {
     public function index(Request $request)
-{
-    $search = $request->input('search');
+    {
+        $search = $request->input('search');
 
-    $customers = Customer::when($search, function($query, $search) {
-        return $query->where('nama', 'like', "%{$search}%")
-                     ->orWhere('email', 'like', "%{$search}%")
-                     ->orWhere('no_hp', 'like', "%{$search}%");
-    })->paginate(10); // Pagination biar bisa currentPage()
+        $customers = Customer::when($search, function($query, $search) {
+            return $query->where('nama', 'like', "%{$search}%")
+                         ->orWhere('email', 'like', "%{$search}%")
+                         ->orWhere('no_telepon', 'like', "%{$search}%");
+        })->paginate(10);
 
-    return view('admin.customers.index', compact('customers'));
-}
-
+        return view('admin.customers.index', compact('customers'));
+    }
 
     public function create()
     {
@@ -32,12 +30,14 @@ class CustomerController extends Controller
         $request->validate([
             'nama' => 'required|string|max:255',
             'alamat' => 'required|string',
-            'no_hp' => 'required|string|max:15',
+            'no_telepon' => 'required|string|max:15',
             'jenis_kelamin' => 'required',
             'email' => 'required|email|unique:customers,email',
         ]);
 
-        Customer::create($request->all());
+        Customer::create($request->only([
+            'nama', 'alamat', 'no_telepon', 'jenis_kelamin', 'email'
+        ]));
 
         return redirect()->route('admin.customers.index')->with('success', 'Customer berhasil ditambahkan!');
     }
@@ -55,12 +55,14 @@ class CustomerController extends Controller
         $request->validate([
             'nama' => 'required|string|max:255',
             'alamat' => 'required|string',
-            'no_hp' => 'required|string|max:15',
+            'no_telepon' => 'required|string|max:15',
             'jenis_kelamin' => 'required',
             'email' => 'required|email|unique:customers,email,' . $customer->id,
         ]);
 
-        $customer->update($request->all());
+        $customer->update($request->only([
+            'nama', 'alamat', 'no_telepon', 'jenis_kelamin', 'email'
+        ]));
 
         return redirect()->route('admin.customers.index')->with('success', 'Customer berhasil diperbarui!');
     }
