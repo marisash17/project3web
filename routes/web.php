@@ -1,0 +1,52 @@
+<?php
+
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\TeknisiController;
+use App\Http\Controllers\LayananController;
+use App\Http\Controllers\NotifikasiController;
+use App\Http\Controllers\PendapatanController;
+
+
+// Halaman login
+Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+Route::post('/login', [AuthController::class, 'login'])->name('login.process');
+
+// Logout
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+// Default root diarahkan ke login
+Route::get('/', function () {
+    return redirect()->route('login');
+});
+
+// Group admin (harus login dulu)
+Route::prefix('admin')->middleware('auth')->group(function () {
+    // Dashboard
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
+
+    // CRUD Customer
+    Route::resource('customers', CustomerController::class);
+    Route::get('/customers', [CustomerController::class, 'index'])->name('admin.customers.index');
+    Route::get('/customers/create', [CustomerController::class, 'create'])->name('admin.customers.create');
+    Route::post('/customers', [CustomerController::class, 'store'])->name('admin.customers.store');
+    Route::get('/customers/{id}/edit', [CustomerController::class, 'edit'])->name('admin.customers.edit');
+    Route::put('/customers/{id}', [CustomerController::class, 'update'])->name('admin.customers.update');
+    Route::delete('/customers/{id}', [CustomerController::class, 'destroy'])->name('admin.customers.destroy');
+});
+
+Route::get('/admin/dashboard', [DashboardController::class, 'index'])
+    ->name('admin.dashboard');
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::resource('teknisi', TeknisiController::class)->names('admin.teknisi');
+    Route::resource('customers', CustomerController::class);
+    Route::resource('teknisi', TeknisiController::class);
+    Route::resource('layanan', LayananController::class);
+    Route::resource('notifikasi', NotifikasiController::class);
+    Route::resource('pendapatan', PendapatanController::class);
+});
+ 
+
+
