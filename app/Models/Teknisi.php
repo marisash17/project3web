@@ -10,10 +10,16 @@ class Teknisi extends Model
     use HasFactory;
 
     protected $fillable = [
+        'user_id',
         'nama',
         'alamat',
-        'no_telepon',
         'jenis_kelamin',
-        'keahlian'
+        'telepon',
+        'keahlian',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

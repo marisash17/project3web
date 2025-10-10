@@ -113,7 +113,7 @@
                         <td>{{ ($teknisi->currentPage() - 1) * $teknisi->perPage() + $loop->iteration }}</td>
                         <td>{{ $t->nama }}</td>
                         <td>{{ $t->alamat }}</td>
-                        <td>{{ $t->no_telepon }}</td>
+                        <td>{{ $t->telepon }}</td>
                         <td>{{ $t->jenis_kelamin }}</td>
                         <td>{{ $t->keahlian }}</td>
                         <td>

@@ -12,14 +12,14 @@ return new class extends Migration
     public function up()
 {
     Schema::table('teknisis', function (Blueprint $table) {
-        $table->dropColumn('email');
+        $table->dropColumn('no_telepon');
     });
 }
 
 public function down()
 {
     Schema::table('teknisis', function (Blueprint $table) {
-        $table->string('email')->nullable();
+        $table->string('no_telepon')->nullable();
     });
 }
 

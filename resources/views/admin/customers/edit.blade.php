@@ -66,31 +66,35 @@
 
             <div class="mb-3">
                 <label class="form-label fw-bold">Nama Customer:</label>
-                <input type="text" name="nama" class="form-control form-control-custom" value="{{ old('nama', $customer->nama) }}" required>
+                <input type="text" name="name" class="form-control form-control-custom" 
+                       value="{{ old('name', $customer->name) }}" required>
             </div>
 
             <div class="mb-3">
                 <label class="form-label fw-bold">Alamat:</label>
-                <input type="text" name="alamat" class="form-control form-control-custom" value="{{ old('alamat', $customer->alamat) }}" required>
+                <input type="text" name="alamat" class="form-control form-control-custom" 
+                       value="{{ old('alamat', $customer->alamat) }}" required>
             </div>
 
             <div class="mb-3">
                 <label class="form-label fw-bold">No. Handphone:</label>
-                <input type="text" name="no_telepon" class="form-control form-control-custom" value="{{ old('no_hp', $customer->no_hp) }}" required>
+                <input type="text" name="no_hp" class="form-control form-control-custom" 
+                       value="{{ old('no_hp', $customer->no_hp) }}" required>
             </div>
 
             <div class="mb-3">
                 <label class="form-label fw-bold">Jenis Kelamin:</label>
-                <select name="jenis_kelamin" class="form-control form-control-custom" required>
+                <select name="gender" class="form-control form-control-custom" required>
                     <option value="" disabled>-- Pilih Jenis Kelamin --</option>
-                    <option value="Laki-laki" {{ old('jenis_kelamin', $customer->jenis_kelamin) == 'Laki-laki' ? 'selected' : '' }}>Laki-laki</option>
-                    <option value="Perempuan" {{ old('jenis_kelamin', $customer->jenis_kelamin) == 'Perempuan' ? 'selected' : '' }}>Perempuan</option>
+                    <option value="Laki-laki" {{ old('gender', $customer->gender) == 'Laki-laki' ? 'selected' : '' }}>Laki-laki</option>
+                    <option value="Perempuan" {{ old('gender', $customer->gender) == 'Perempuan' ? 'selected' : '' }}>Perempuan</option>
                 </select>
             </div>
 
             <div class="mb-3">
                 <label class="form-label fw-bold">Email:</label>
-                <input type="email" name="email" class="form-control form-control-custom" value="{{ old('email', $customer->email) }}" required>
+                <input type="email" name="email" class="form-control form-control-custom" 
+                       value="{{ old('email', $customer->email) }}" required>
             </div>
 
             <!-- Tombol rata tengah -->

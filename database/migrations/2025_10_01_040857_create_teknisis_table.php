@@ -10,10 +10,17 @@ return new class extends Migration
     {
         Schema::create('teknisis', function (Blueprint $table) {
             $table->id();
+
+            // 🔗 Relasi ke tabel users
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+
+            // 📋 Data teknisi lengkap
             $table->string('nama');
-            $table->string('email')->unique();
-            $table->string('telepon')->nullable();
-            $table->string('keahlian')->nullable();
+            $table->string('alamat');
+            $table->string('jenis_kelamin', 20);
+            $table->string('telepon');
+            $table->string('keahlian');
+
             $table->timestamps();
         });
     }

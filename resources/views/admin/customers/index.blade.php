@@ -82,9 +82,10 @@
 
         <!-- Tombol tambah & search di kanan -->
         <div class="d-flex justify-content-between align-items-center mb-3">
-            <a href="{{ route('admin.customers.create') }}" class="btn btn-sm btn-add">
-                <i class="bi bi-plus-circle"></i> Tambah Customer
-            </a>
+            {{-- Tombol tambah dinonaktifkan karena pendaftaran via Flutter --}}
+            <button class="btn btn-sm btn-add" disabled>
+                <i class="bi bi-plus-circle"></i> Tambah Customer (via Flutter)
+            </button>
             <form action="{{ route('admin.customers.index') }}" method="GET" class="d-flex">
                 <input type="text" name="search" value="{{ request('search') }}" 
                        class="form-control form-control-sm me-2" placeholder="Cari...">
@@ -115,10 +116,10 @@
                 @forelse($customers as $index => $customer)
                     <tr>
                         <td>{{ ($customers->currentPage() - 1) * $customers->perPage() + $loop->iteration }}</td>
-                        <td>{{ $customer->nama }}</td>
+                        <td>{{ $customer->name }}</td>
                         <td>{{ $customer->alamat }}</td>
-                        <td>{{ $customer->no_telepon }}</td>
-                        <td>{{ $customer->jenis_kelamin }}</td>
+                        <td>{{ $customer->no_hp }}</td>
+                        <td>{{ $customer->gender }}</td>
                         <td>{{ $customer->email }}</td>
                         <td>
                             <div class="d-flex justify-content-center gap-2">
