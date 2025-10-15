@@ -31,7 +31,7 @@
         color: white;
     }
     .btn-edit:hover {
-        background-color: #3120CD;
+        background-color: #2518a5;
     }
     .btn-delete {
         background-color: #cc0000;
@@ -69,12 +69,11 @@
     body {
         background-color: #F5F5F5;
     }
-
 </style>
 
 <div class="container my-4">
     <div class="card-custom">
-        <!-- Judul di tengah dengan ikon -->
+        <!-- Judul -->
         <div class="text-center mb-4">
             <i class="bi bi-gear-fill fs-1 d-block text-custom-blue"></i>
             <h3 class="fw-bold text-custom-blue">Data Layanan</h3>
@@ -106,6 +105,7 @@
                     <th>Jenis Layanan</th>
                     <th>Gambar</th>
                     <th>Deskripsi</th>
+                    <th>Harga</th>
                     <th>Aksi</th>
                 </tr>
             </thead>
@@ -122,6 +122,7 @@
                             @endif
                         </td>
                         <td>{{ $layanan->deskripsi }}</td>
+                        <td>{{ $layanan->harga }}</td>
                         <td>
                             <div class="d-flex justify-content-center gap-2">
                                 <a href="{{ route('admin.layanan.edit', $layanan->id) }}" 
@@ -141,7 +142,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="5">Tidak ada layanan</td>
+                        <td colspan="6">Tidak ada layanan</td>
                     </tr>
                 @endforelse
             </tbody>

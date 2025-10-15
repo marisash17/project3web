@@ -71,4 +71,13 @@ class ApiAuthController extends Controller
 
         return response()->json(['message' => 'Logout berhasil']);
     }
+
+    public function profile(Request $request)
+{
+    return response()->json([
+        'success' => true,
+        'data' => $request->user(),
+    ]);
+}
+
 }

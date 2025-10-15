@@ -73,6 +73,12 @@
                 <label class="form-label fw-bold">Deskripsi Layanan:</label>
                 <textarea name="deskripsi" class="form-control form-control-custom" rows="4" required>{{ $layanan->deskripsi }}</textarea>
             </div>
+            
+            <div class="mb-3">
+                <label class="form-label fw-bold">Harga Layanan (Rp):</label>
+                <input type="number" name="harga" class="form-control form-control-custom" 
+                value="{{ $layanan->harga }}" min="0" required>
+            </div>
 
             <div class="mb-3">
                 <label class="form-label fw-bold">Gambar Layanan:</label>
