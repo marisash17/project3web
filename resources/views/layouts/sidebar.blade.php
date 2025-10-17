@@ -25,6 +25,11 @@
 
         <ul class="nav nav-pills flex-column mb-auto">
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('admin.') }}">Pendapatan</a>
+                <a class="nav-link" href="{{ route('admin.') }}">Riwayat Pesanan</a>
+            </li>
+
+        <ul class="nav nav-pills flex-column mb-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('admin.') }}">Transaksi</a>
             </li>
 </div>

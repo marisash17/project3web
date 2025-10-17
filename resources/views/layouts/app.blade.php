@@ -6,105 +6,101 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-        }
-        .sidebar {
-            position: fixed;
-            top: 0; 
-            left: 0;
-            width: 300px;
-            height: 100%;
-            background: #3120CD;
-            color: #fff;
-            padding: 20px 15px;
-        }
-        .logo {
-            margin-bottom: 30px;
-        }
-        .logo img {
-            max-width: 50px;
-            display: block;
-            margin: 0;
-        }
-        .sidebar a {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: #fff;
-            text-decoration: none;
-            padding: 10px;
-            border-radius: 8px;
-            margin: 5px 0;
-        }
-        .sidebar a:hover {
-            background: #3120CD;
-        }
-        .sidebar a.active {
-            background: #ffffff;
-            color: #3120CD !important;
-            font-weight: bold;
-        }
-        .sidebar a.active i {
-            color: #3120CD;
-        }
-        .header {
-            position: fixed;
-            top: 0;
-            left: 300px; 
-            right: 0;
-            height: 60px;
-            background-color: #3120CD;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 20px;
-            color: #fff;
-            z-index: 1000;
-        }
-        .header .left {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .header .right a {
-            color: #fff;
-            font-size: 20px;
-            text-decoration: none;
-        }
-        .header .right a:hover {
-            opacity: 0.8;
-        }
-        .footer {
-            position: fixed;
-            bottom: 0;
-            left: 300px;
-            right: 0;
-            height: 50px;
-            background-color: #3120CD;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #fff;
-        }
-        .content {
-            margin-left: 300px;
-            padding: 80px 50px 80px 50px; 
-        }
-        .admin-info {
-            font-size: 18px;
-            font-weight: 500;
-            color: #fff;
-            margin-top: 20px;
-            margin-bottom: 30px;
-            text-align: center;
-        }
-        .admin-info i {
-            font-size: 50px;
-            display: block;
-            margin-bottom: 8px;
-        }
+       .sidebar {
+    position: fixed;
+    top: 0; 
+    left: 0;
+    width: 300px;
+    height: 100%;
+    background: linear-gradient(180deg, #2B1FC0, #4430E7);
+    color: #fff;
+    padding: 25px 18px;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    box-shadow: 5px 0 20px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease;
+}
+
+.sidebar:hover {
+    box-shadow: 8px 0 25px rgba(0, 0, 0, 0.25);
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; 
+    margin-bottom: 25px;
+}
+
+.logo img {
+    max-width: 55px;
+    margin-left: 5px;
+    transition: transform 0.3s ease;
+}
+
+
+.logo img:hover {
+    transform: scale(1.1);
+}
+
+.admin-info {
+    font-size: 18px;
+    font-weight: 500;
+    color: #fff;
+    margin-top: 20px;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.admin-info i {
+    font-size: 55px;
+    display: block;
+    margin-bottom: 8px;
+    transition: transform 0.3s ease;
+}
+
+.admin-info i:hover {
+    transform: scale(1.1);
+}
+
+.sidebar a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #d6d6f7;
+    text-decoration: none;
+    padding: 12px 15px;
+    border-radius: 12px;
+    margin: 6px 0;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.sidebar a i {
+    font-size: 18px;
+    transition: transform 0.3s ease;
+}
+
+/* efek hover */
+.sidebar a:hover {
+    background: rgba(255, 255, 255, 0.15);
+    color: #fff;
+    transform: translateX(5px);
+}
+
+/* efek aktif */
+.sidebar a.active {
+    background: #fff;
+    color: #2B1FC0;
+    font-weight: 600;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar a.active i {
+    color: #2B1FC0;
+    transform: scale(1.1);
+}
+
     </style>
 </head>
 
@@ -143,10 +139,15 @@
                     <span>Kelola Layanan</span>
         </a>
 
+        <a href="{{ route('admin.pesanan.index') }}"
+           class="nav-link {{ request()->is('admin/pesanan*') ? 'active' : '' }}">
+                <i class="bi bi-clock-history"></i>
+                    <span>Riwayat Pesanan</span>
+
         <a href="{{ route('admin.pendapatan.index') }}"
            class="nav-link {{ request()->is('admin/pendapatan*') ? 'active' : '' }}">
                 <i class="bi bi-cash-coin"></i>
-                    <span>Kelola Pendapatan</span>
+                    <span>Kelola Transaksi</span>
         </a>
 
         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">

@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Login Customer</title>
+    <title>Login Admin</title>
     <style>
         body {
             font-family: Arial, sans-serif;

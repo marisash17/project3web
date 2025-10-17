@@ -3,8 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use App\Models\Customer;
+use App\Models\User;
 use App\Models\Teknisi;
 use App\Models\Layanan;
 use App\Models\Notifikasi;
@@ -14,11 +13,12 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $totalCustomers  = Customer::count();
+        // Ambil hanya user dengan role 'customer'
+        $totalCustomers  = User::where('role', 'customer')->count();
         $totalTeknisi    = Teknisi::count();
         $totalLayanan    = Layanan::count();
         $totalNotifikasi = Notifikasi::count();
-        $totalPendapatan = Pendapatan::sum('jumlah'); // ganti "jumlah" sesuai kolom pendapatan di database
+        $totalPendapatan = Pendapatan::sum('jumlah'); // ganti kolom sesuai nama field di tabel pendapatan
 
         return view('admin.dashboard', compact(
             'totalCustomers',
@@ -29,5 +29,3 @@ class DashboardController extends Controller
         ));
     }
 }
-
-

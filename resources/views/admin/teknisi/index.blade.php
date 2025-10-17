@@ -69,20 +69,84 @@
     body {
         background-color: #F5F5F5;
     }
+
+    /* ✅ Ubah posisi search ke kanan */
+    .search-box {
+        display: flex;
+        justify-content: flex-end;
+        margin-bottom: 20px;
+    }
+
+    .search-box form {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        width: 100%;
+        max-width: 350px;
+    }
+
+    .search-box input {
+        flex: 1;
+    }
+
+    .btn-secondary {
+        background-color: white;
+        color: #3120CD;
+        border: 1px solid #3120CD;
+        transition: 0.25s ease;
+    }
+
+    .btn-secondary:hover,
+    .btn-secondary:active,
+    .btn-secondary:focus {
+        background-color: #3120CD;
+        color: white;
+        border: 1px solid #3120CD;
+    }
+
+    /* Atur jarak konten dari sidebar */
+.container {
+    margin-left: 330px; /* kasih jarak biar ga mepet ke sidebar */
+    max-width: calc(100% - 350px); /* biar kontennya tetep proporsional */
+}
+
+/* Biar halaman tetap keliatan clean */
+body {
+    background-color: #F5F5F5;
+}
+
+/* Responsif untuk layar kecil */
+@media (max-width: 992px) {
+    .container {
+        margin-left: 0;
+        max-width: 100%;
+        padding: 20px;
+    }
+}
+
 </style>
 
 <div class="container my-4">
     <div class="card-custom">
+
+        <!-- 🔙 Tombol Back ke Dashboard -->
+        <div class="mb-3">
+            <a href="{{ route('admin.dashboard') }}" class="btn btn-secondary">
+                <i class="bi bi-arrow-left"></i>
+            </a>
+        </div>
+        
         <!-- Judul -->
         <div class="text-center mb-4">
             <i class="bi bi-person-gear fs-1 d-block text-custom-blue"></i>
             <h3 class="fw-bold text-custom-blue">Data Teknisi</h3>
         </div>
 
-        <!-- search -->
-            <form action="{{ route('admin.teknisi.index') }}" method="GET" class="d-flex">
+        <!-- 🔍 Search -->
+        <div class="search-box">
+            <form action="{{ route('admin.teknisi.index') }}" method="GET">
                 <input type="text" name="search" value="{{ request('search') }}" 
-                       class="form-control form-control-sm me-2" placeholder="Cari teknisi...">
+                       class="form-control form-control-sm" placeholder="Cari teknisi...">
                 <button class="btn btn-sm btn-outline-secondary">
                     <i class="bi bi-search"></i>
                 </button>
@@ -108,6 +172,7 @@
                 </tr>
             </thead>
             <tbody>
+
                 @forelse($teknisi as $index => $t)
                     <tr>
                         <td>{{ ($teknisi->currentPage() - 1) * $teknisi->perPage() + $loop->iteration }}</td>
@@ -117,11 +182,13 @@
                         <td>{{ $t->jenis_kelamin }}</td>
                         <td>{{ $t->keahlian }}</td>
                         <td>
+
                             <div class="d-flex justify-content-center gap-2">
                                 <a href="{{ route('admin.teknisi.edit', $t->id) }}" 
                                    class="btn btn-sm btn-edit">
                                     <i class="bi bi-pencil-square"></i> Edit
                                 </a>
+
                                 <form action="{{ route('admin.teknisi.destroy', $t->id) }}" 
                                       method="POST" onsubmit="return confirm('Yakin mau hapus?')">
                                     @csrf
@@ -130,6 +197,7 @@
                                         <i class="bi bi-trash"></i> Hapus
                                     </button>
                                 </form>
+                                
                             </div>
                         </td>
                     </tr>

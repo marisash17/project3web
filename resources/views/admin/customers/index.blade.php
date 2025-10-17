@@ -70,10 +70,54 @@
         background-color: #F5F5F5;
     }
 
+    .btn-secondary {
+        background-color: white;
+        color: #3120CD;
+        border: 1px solid #3120CD;
+        transition: 0.25s ease;
+    }
+
+    .btn-secondary:hover,
+    .btn-secondary:active,
+    .btn-secondary:focus {
+        background-color: #3120CD;
+        color: white;
+        border: 1px solid #3120CD;
+    }
+
+    /* Atur jarak konten dari sidebar */
+.container {
+    margin-left: 330px; /* kasih jarak biar ga mepet ke sidebar */
+    max-width: calc(100% - 350px); /* biar kontennya tetep proporsional */
+}
+
+/* Biar halaman tetap keliatan clean */
+body {
+    background-color: #F5F5F5;
+}
+
+/* Responsif untuk layar kecil */
+@media (max-width: 992px) {
+    .container {
+        margin-left: 0;
+        max-width: 100%;
+        padding: 20px;
+    }
+}
+
+
 </style>
 
 <div class="container my-4">
     <div class="card-custom">
+
+        <!-- 🔙 Tombol Back ke Dashboard -->
+        <div class="mb-3">
+            <a href="{{ route('admin.dashboard') }}" class="btn btn-secondary">
+                <i class="bi bi-arrow-left"></i>
+            </a>
+        </div>
+
         <!-- Judul di tengah dengan ikon -->
         <div class="text-center mb-4">
             <i class="bi bi-people-fill fs-1 d-block text-custom-blue"></i>
@@ -82,7 +126,6 @@
 
         <!-- Tombol tambah & search di kanan -->
         <div class="d-flex justify-content-between align-items-center mb-3">
-            {{-- Tombol tambah dinonaktifkan karena pendaftaran via Flutter --}}
             <button class="btn btn-sm btn-add" disabled>
                 <i class="bi bi-plus-circle"></i> Tambah Customer (via Flutter)
             </button>

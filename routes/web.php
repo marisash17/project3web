@@ -7,6 +7,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\TeknisiController;
 use App\Http\Controllers\LayananController;
 use App\Http\Controllers\NotifikasiController;
+use App\Http\Controllers\PesananController;
 use App\Http\Controllers\PendapatanController;
 
 
@@ -37,16 +38,19 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::delete('/customers/{id}', [CustomerController::class, 'destroy'])->name('admin.customers.destroy');
 });
 
-Route::get('/admin/dashboard', [DashboardController::class, 'index'])
-    ->name('admin.dashboard');
-Route::prefix('admin')->name('admin.')->group(function () {
+    Route::prefix('admin')->name('admin.')->group(function () {
     Route::resource('teknisi', TeknisiController::class)->names('admin.teknisi');
-    Route::resource('customers', CustomerController::class);
     Route::resource('teknisi', TeknisiController::class);
     Route::resource('layanan', LayananController::class);
     Route::resource('notifikasi', NotifikasiController::class);
+    
+     Route::get('/pesanan', [PesananController::class, 'index'])
+        ->name('pesanan.index');
+
+
     Route::resource('pendapatan', PendapatanController::class);
 });
+
  
 
 
