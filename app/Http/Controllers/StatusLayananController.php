@@ -2,16 +2,30 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Layanan;
 use Illuminate\Http\Request;
+use App\Models\StatusLayanan;
 
 class StatusLayananController extends Controller
 {
-    public function index()
+    /**
+     * Menampilkan daftar status layanan.
+     */
+    public function index(Request $request)
     {
-        // Ambil semua data layanan dengan relasi customer & teknisi
-        $layanans = Layanan::with(['customer', 'teknisi'])->get();
+        // Ambil semua data status layanan beserta relasi customer & teknisi
+        // dan tambahkan pencarian sederhana
+        $query = StatusLayanan::with(['customer', 'teknisi']);
 
-        return view('admin.statuslayanan.index', compact('layanans'));
+        if ($request->has('search') && $request->search != '') {
+            $search = $request->search;
+            $query->whereHas('customer', function ($q) use ($search) {
+                $q->where('nama', 'like', "%$search%");
+            })->orWhere('layanan', 'like', "%$search%");
+        }
+
+        $pemesanans = $query->latest()->paginate(10);
+
+        // Kirim data ke view
+        return view('admin.statuslayanan.index', compact('pemesanans'));
     }
 }

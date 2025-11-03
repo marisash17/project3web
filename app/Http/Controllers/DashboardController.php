@@ -17,14 +17,12 @@ class DashboardController extends Controller
         $totalCustomers  = User::where('role', 'customer')->count();
         $totalTeknisi    = Teknisi::count();
         $totalLayanan    = Layanan::count();
-        $totalNotifikasi = Notifikasi::count();
         $totalPendapatan = Pendapatan::sum('jumlah'); // ganti kolom sesuai nama field di tabel pendapatan
 
         return view('admin.dashboard', compact(
             'totalCustomers',
             'totalTeknisi',
             'totalLayanan',
-            'totalNotifikasi',
             'totalPendapatan'
         ));
     }

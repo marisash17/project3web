@@ -7,25 +7,20 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\TeknisiController;
 use App\Http\Controllers\LayananController;
 use App\Http\Controllers\NotifikasiController;
-use App\Http\Controllers\PesananController;
+use App\Http\Controllers\StatusLayananController;
 use App\Http\Controllers\PendapatanController;
 
 
-// Halaman login
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.process');
-
-// Logout
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-
-// Default root diarahkan ke login
 Route::get('/', function () {
     return redirect()->route('login');
 });
 
 // Group admin (harus login dulu)
 Route::prefix('admin')->middleware('auth')->group(function () {
-    // Dashboard
+
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
 
     // CRUD Customer
@@ -44,8 +39,8 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::resource('layanan', LayananController::class);
     Route::resource('notifikasi', NotifikasiController::class);
     
-     Route::get('/pesanan', [PesananController::class, 'index'])
-        ->name('pesanan.index');
+     Route::get('/pesanan', [StatusLayananController::class, 'index'])
+        ->name('statuslayanan.index');
 
 
     Route::resource('pendapatan', PendapatanController::class);
