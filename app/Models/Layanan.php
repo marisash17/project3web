@@ -14,6 +14,7 @@ class Layanan extends Model
         'jenis_layanan',
         'gambar',
         'deskripsi',
+        'harga',
     ];
 }
 

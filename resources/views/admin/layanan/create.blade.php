@@ -12,14 +12,13 @@
         --card-shadow: 0 8px 32px rgba(49, 32, 205, 0.15);
     }
 
-    /* ====== Card dinaikkan ke atas ====== */
     .layanan-container {
         width: 100%;
         min-height: 100vh;
         display: flex;
         justify-content: center;
-        align-items: flex-start; /* dari center -> flex-start */
-        padding: 80px 20px; /* tambahkan padding atas agar card naik */
+        align-items: flex-start; 
+        padding: 80px 20px; 
         background: #f8f9ff;
     }
 
@@ -344,6 +343,14 @@
                     @enderror
                     <div class="file-preview" id="filePreview"></div>
                 </div>
+            <div class="mb-3">
+                <label class="form-label fw-bold">Harga Layanan (Rp):</label>
+                <input type="number" name="harga" class="form-control form-control-custom" min="0" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-bold">Pilih Gambar Layanan:</label>
+                <input type="file" name="gambar" class="form-control form-control-custom">
             </div>
 
             <div class="button-group">

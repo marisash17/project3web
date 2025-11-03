@@ -83,6 +83,21 @@
         gap: 8px;
         transition: all 0.3s ease;
         box-shadow: 0 4px 15px rgba(49, 32, 205, 0.2);
+        gap: 4px;
+    }
+    .btn-edit {
+        background-color: #3120CD;
+        color: white;
+    }
+    .btn-edit:hover {
+        background-color: #2518a5;
+    }
+    .btn-delete {
+        background-color: #cc0000;
+        color: white;
+    }
+    .btn-delete:hover {
+        background-color: #990000;
     }
 
     .back-btn:hover {
@@ -131,7 +146,6 @@
         box-shadow: 0 6px 20px rgba(49, 32, 205, 0.3);
     }
 
-    /* ====== Action Bar di Atas Tabel ====== */
     .action-bar {
         display: flex;
         justify-content: space-between;
@@ -161,7 +175,6 @@
         color: white;
     }
 
-    /* ====== Tabel ====== */
     .table-container {
         background: rgba(255, 255, 255, 0.9);
         border-radius: 16px;
@@ -197,21 +210,20 @@
         word-break: break-word;
     }
 
-    /* Tentukan lebar kolom untuk Layanan */
     .custom-table th:nth-child(1),
-    .custom-table td:nth-child(1) { width: 60px; } /* No */
+    .custom-table td:nth-child(1) { width: 60px; } 
 
     .custom-table th:nth-child(2),
-    .custom-table td:nth-child(2) { width: 200px; } /* Jenis Layanan */
+    .custom-table td:nth-child(2) { width: 200px; } 
 
     .custom-table th:nth-child(3),
-    .custom-table td:nth-child(3) { width: 150px; } /* Gambar */
+    .custom-table td:nth-child(3) { width: 150px; }
 
     .custom-table th:nth-child(4),
-    .custom-table td:nth-child(4) { width: 400px; } /* Deskripsi */
+    .custom-table td:nth-child(4) { width: 400px; } 
 
     .custom-table th:nth-child(5),
-    .custom-table td:nth-child(5) { width: 180px; } /* Aksi */
+    .custom-table td:nth-child(5) { width: 180px; } 
 
     .custom-table tbody tr:nth-child(even) { background: #f9f9ff; }
     .custom-table tbody tr:nth-child(odd) { background: #ffffff; }
@@ -221,7 +233,6 @@
         transition: 0.3s;
     }
 
-    /* Gambar Styles */
     .gambar-layanan {
         width: 80px;
         height: 80px;
@@ -235,7 +246,6 @@
         font-style: italic;
     }
 
-    /* Deskripsi Styles */
     .deskripsi-text {
         display: -webkit-box;
         -webkit-line-clamp: 3;
@@ -284,7 +294,6 @@
         background: #c82333;
     }
 
-    /* Alert Success */
     .alert-success {
         background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
         border: 1px solid rgba(40, 167, 69, 0.2);
@@ -309,7 +318,6 @@
         to { opacity: 1; transform: translateY(0); }
     }
 
-    /* Responsive */
     @media (max-width: 768px) {
         .top-bar {
             flex-direction: column;
@@ -367,6 +375,18 @@
         <div class="top-bar">
             <a href="{{ route('admin.dashboard') }}" class="back-btn">
                 <i class="bi bi-arrow-left"></i> Kembali ke Dashboard
+</style>
+
+<div class="container my-4">
+    <div class="card-custom">
+        <div class="text-center mb-4">
+            <i class="bi bi-gear-fill fs-1 d-block text-custom-blue"></i>
+            <h3 class="fw-bold text-custom-blue">Data Layanan</h3>
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <a href="{{ route('admin.layanan.create') }}" class="btn btn-sm btn-add">
+                <i class="bi bi-plus-circle"></i> Tambah Layanan
             </a>
 
             <form action="{{ route('admin.layanan.index') }}" method="GET" class="search-form">
@@ -385,7 +405,6 @@
             <h1 class="page-title">Data Layanan</h1>
         </div>
 
-        <!-- Success Message -->
         @if(session('success'))
             <div class="alert alert-success">
                 <i class="bi bi-check-circle-fill"></i>
@@ -393,11 +412,61 @@
             </div>
         @endif
 
-        <!-- Action Bar dengan Tombol Tambah di Atas Tabel -->
         <div class="action-bar">
             <a href="{{ route('admin.layanan.create') }}" class="btn-add">
                 <i class="bi bi-plus-circle"></i> Tambah Layanan
             </a>
+        <table class="table-custom">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Jenis Layanan</th>
+                    <th>Gambar</th>
+                    <th>Deskripsi</th>
+                    <th>Harga</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse($layanans as $index => $layanan)
+                    <tr>
+                        <td>{{ ($layanans->currentPage() - 1) * $layanans->perPage() + $loop->iteration }}</td>
+                        <td>{{ $layanan->jenis_layanan }}</td>
+                        <td>
+                            @if($layanan->gambar)
+                                <img src="{{ asset('storage/' . $layanan->gambar) }}" width="80">
+                            @else
+                            @endif
+                        </td>
+                        <td>{{ $layanan->deskripsi }}</td>
+                        <td>{{ $layanan->harga }}</td>
+                        <td>
+                            <div class="d-flex justify-content-center gap-2">
+                                <a href="{{ route('admin.layanan.edit', $layanan->id) }}" 
+                                   class="btn btn-sm btn-edit">
+                                    <i class="bi bi-pencil-square"></i> Edit
+                                </a>
+                                <form action="{{ route('admin.layanan.destroy', $layanan->id) }}" 
+                                      method="POST" onsubmit="return confirm('Yakin mau hapus?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-sm btn-delete">
+                                        <i class="bi bi-trash"></i> Hapus
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="6">Tidak ada layanan</td>
+                    </tr>
+                @endforelse
+            </tbody>
+        </table>
+
+        <div class="mt-3">
+            {{ $layanans->links() }}
         </div>
 
         <div class="table-container">
@@ -462,7 +531,6 @@
 </div>
 
 <script>
-    // Add interactive effects
     document.addEventListener('DOMContentLoaded', function() {
         const tableRows = document.querySelectorAll('.custom-table tbody tr');
         
@@ -476,7 +544,6 @@
             });
         });
 
-        // Add focus effect to search input
         const searchInput = document.querySelector('.search-input');
         searchInput.addEventListener('focus', function() {
             this.style.transform = 'translateY(-1px)';
