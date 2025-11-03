@@ -73,11 +73,34 @@ class ApiAuthController extends Controller
     }
 
     public function profile(Request $request)
-{
-    return response()->json([
-        'success' => true,
-        'data' => $request->user(),
-    ]);
-}
+    {
+        $user = $request->user(); // Ambil data user dari token login
 
+        return response()->json([
+            'success' => true,
+            'message' => 'Data profil berhasil diambil',
+            'data' => $user,
+        ]);
+    }
+
+    public function updateProfile(Request $request)
+    {
+        $user = $request->user();
+
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'alamat' => 'required|string',
+            'no_hp' => 'required|string',
+            'gender' => 'required|in:Laki-laki,Perempuan',
+            'email' => 'required|email|unique:users,email,' . $user->id,
+        ]);
+
+        $user->update($validated);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Profil berhasil diperbarui',
+            'data' => $user,
+        ]);
+    }
 }

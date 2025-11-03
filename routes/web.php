@@ -47,5 +47,17 @@ Route::prefix('admin')->middleware('auth')->group(function () {
 });
 
  
+Route::get('/midtrans/finish', function () {
+    // bisa redirect ke halaman Flutter dengan deep link
+    return redirect('myapp://riwayat-pemesanan');
+});
+
+Route::get('/midtrans/error', function () {
+    return redirect('myapp://pembayaran-gagal');
+});
+
+Route::get('/midtrans/unfinish', function () {
+    return redirect('myapp://pembayaran-batal');
+});
 
 

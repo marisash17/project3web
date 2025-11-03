@@ -6,6 +6,7 @@ use App\Http\Controllers\ApiAuthController;
 use App\Http\Controllers\PemesananController;
 use App\Http\Controllers\ApiLayananController;
 use App\Http\Controllers\ApiTeknisiController;
+use App\Http\Controllers\MidtransController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,8 +21,10 @@ Route::post('/login', [ApiAuthController::class, 'login']);
 Route::get('/layanans', [ApiLayananController::class, 'index']);
 Route::get('/layanans/{id}', [ApiLayananController::class, 'show']);
 
+// Midtrans Payment
+Route::post('/midtrans/token', [MidtransController::class, 'getSnapToken']);
 
-// 🔒 Semua route di bawah ini butuh token Sanctum
+// Semua route di bawah ini butuh token Sanctum
 Route::middleware('auth:sanctum')->group(function () {
 
     // 🔹 Get data user login
@@ -41,9 +44,11 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // 🔹 Auth-related routes
     Route::get('/profile', [ApiAuthController::class, 'profile']);
+    Route::put('/profile/update', [ApiAuthController::class, 'updateProfile']);
     Route::post('/logout', [ApiAuthController::class, 'logout']);
 
     // 🔹 Teknisi tambahan
     Route::post('/teknisi/register', [ApiTeknisiController::class, 'register']);
     Route::get('/profile-teknisi', [ApiTeknisiController::class, 'profile']);
+    
 });
