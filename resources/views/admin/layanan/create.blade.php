@@ -327,22 +327,7 @@
                     @enderror
                 </div>
             </div>
-
-            <div class="form-row">
-                <div class="form-group full-width">
-                    <label class="form-label">Pilih Gambar Layanan</label>
-                    <input type="file" 
-                           name="gambar" 
-                           class="form-control-custom file-input-custom"
-                           accept="image/*">
-                    @error('gambar')
-                        <div class="error-message">
-                            <i class="bi bi-exclamation-circle"></i>
-                            {{ $message }}
-                        </div>
-                    @enderror
-                    <div class="file-preview" id="filePreview"></div>
-                </div>
+            
             <div class="mb-3">
                 <label class="form-label fw-bold">Harga Layanan (Rp):</label>
                 <input type="number" name="harga" class="form-control form-control-custom" min="0" required>
