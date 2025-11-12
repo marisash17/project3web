@@ -17,6 +17,7 @@ class StatusLayanan extends Model
         'technician_name',
         'status',
         'total_amount',
-        'created_at'
+        'created_at',
+        'metode',
     ];
 }

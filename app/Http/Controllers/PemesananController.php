@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Teknisi;
 use App\Models\Pemesanan;
 use Illuminate\Http\Request;
+use App\Models\StatusLayanan;
 
 class PemesananController extends Controller
 {
@@ -22,6 +24,7 @@ class PemesananController extends Controller
             return response()->json(['success' => false, 'message' => 'User belum login.'], 401);
         }
 
+        // 🔹 Simpan ke tabel "pemesanan"
         $pemesanan = Pemesanan::create([
             'user_id' => $user->id,
             'layanan_id' => $request->layanan_id,
@@ -32,6 +35,15 @@ class PemesananController extends Controller
             'status' => 'Diproses',
         ]);
 
+        // 🔹 Simpan juga ke tabel "status_layanan"
+        $statusLayanan = new StatusLayanan();
+        $statusLayanan->customer_id = $user->id;
+        $statusLayanan->status = 'Menunggu Konfirmasi';
+        $statusLayanan->tanggal_pemesanan = now();
+        $statusLayanan->catatan = 'Pesanan baru dibuat';
+        $statusLayanan->metode = strtolower($request->metode_pembayaran); // 🟢 "cash" / "transfer"
+        $statusLayanan->save();
+
         return response()->json([
             'success' => true,
             'message' => 'Pesanan berhasil dibuat pada tanggal ' . now()->format('d-m-Y'),
@@ -40,16 +52,16 @@ class PemesananController extends Controller
     }
 
     // 2️⃣ CUSTOMER: LIHAT RIWAYAT
-        public function myOrders()
-        {
-            $user = auth()->user();
+    public function myOrders()
+    {
+        $user = auth()->user();
 
-            if (!$user) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'User belum login.',
-                ], 401);
-            }
+        if (!$user) {
+            return response()->json([
+                'success' => false,
+                'message' => 'User belum login.',
+            ], 401);
+        }
 
         $orders = Pemesanan::with([
             'layanan:id,jenis_layanan',
@@ -81,6 +93,13 @@ class PemesananController extends Controller
             'teknisi_id' => $user->id,
         ]);
 
+        // 🔹 Update juga status layanan
+        $statusLayanan = StatusLayanan::where('customer_id', $pemesanan->user_id)->latest()->first();
+        if ($statusLayanan) {
+            $statusLayanan->status = $request->status;
+            $statusLayanan->save();
+        }
+
         return response()->json([
             'success' => true,
             'message' => 'Status berhasil diperbarui',
@@ -97,4 +116,26 @@ class PemesananController extends Controller
 
         return response()->json(['success' => true, 'data' => $orders]);
     }
+
+    public function edit($id)
+        {
+            $pemesanan = Pemesanan::with(['layanan', 'user', 'teknisi'])->findOrFail($id);
+            $teknisis = Teknisi::all(); // ambil semua teknisi dari tabel teknisis
+            return view('admin.statuslayanan.edit', compact('pemesanan', 'teknisis'));
+        }
+
+        public function assignTeknisi(Request $request, $id)
+        {
+            $request->validate([
+                'teknisi_id' => 'required|exists:teknisis,id',
+            ]);
+
+            $pemesanan = Pemesanan::findOrFail($id);
+            $pemesanan->teknisi_id = $request->teknisi_id;
+            $pemesanan->status = 'Dikerjakan'; // ubah status otomatis jika perlu
+            $pemesanan->save();
+
+            return redirect()->route('admin.statuslayanan.index')->with('success', 'Teknisi berhasil ditugaskan!');
+        }
+
 }

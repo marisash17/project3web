@@ -2,13 +2,14 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\CustomerController;
-use App\Http\Controllers\TeknisiController;
 use App\Http\Controllers\LayananController;
+use App\Http\Controllers\TeknisiController;
+use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\PemesananController;
 use App\Http\Controllers\NotifikasiController;
-use App\Http\Controllers\StatusLayananController;
 use App\Http\Controllers\PendapatanController;
+use App\Http\Controllers\StatusLayananController;
 
 
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
@@ -60,4 +61,6 @@ Route::get('/midtrans/unfinish', function () {
     return redirect('myapp://pembayaran-batal');
 });
 
+Route::get('/admin/statuslayanan/{id}/edit', [PemesananController::class, 'edit'])->name('admin.statuslayanan.edit');
+Route::post('/admin/statuslayanan/{id}/assign-teknisi', [PemesananController::class, 'assignTeknisi'])->name('admin.statuslayanan.assign');
 

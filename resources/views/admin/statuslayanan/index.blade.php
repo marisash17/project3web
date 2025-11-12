@@ -30,7 +30,6 @@
         border: 1px solid rgba(255,255,255,0.6);
         width: 98%;
         max-width: 1650px;
-        transition: all 0.3s ease;
         animation: fadeInUp 0.6s ease-out;
     }
 
@@ -88,7 +87,6 @@
     .back-btn:hover {
         transform: translateY(-2px);
         box-shadow: 0 6px 20px rgba(49, 32, 205, 0.3);
-        color: white;
     }
 
     .search-form {
@@ -142,7 +140,6 @@
     .custom-table {
         width: 100%;
         border-collapse: collapse;
-        table-layout: fixed;
         font-size: 14px;
     }
 
@@ -151,56 +148,25 @@
         color: white;
     }
 
-    .custom-table th {
-        padding: 14px 12px;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.3px;
-        text-align: center;
-    }
-
+    .custom-table th,
     .custom-table td {
-        padding: 12px 12px;
-        border-bottom: 1px solid #eee;
+        padding: 14px 12px;
         text-align: center;
-        vertical-align: middle;
-        word-break: break-word;
+        border-bottom: 1px solid #eee;
     }
 
-    /* Tentukan lebar kolom */
-    .custom-table th:nth-child(1),
-    .custom-table td:nth-child(1) { width: 60px; }
+    .custom-table th {
+        text-transform: uppercase;
+        font-weight: 600;
+        letter-spacing: 0.3px;
+    }
 
-    .custom-table th:nth-child(2),
-    .custom-table td:nth-child(2) { width: 180px; }
-
-    .custom-table th:nth-child(3),
-    .custom-table td:nth-child(3) { width: 150px; }
-
-    .custom-table th:nth-child(4),
-    .custom-table td:nth-child(4) { width: 140px; }
-
-    .custom-table th:nth-child(5),
-    .custom-table td:nth-child(5) { width: 120px; }
-
-    .custom-table th:nth-child(6),
-    .custom-table td:nth-child(6) { width: 120px; }
-
-    .custom-table th:nth-child(7),
-    .custom-table td:nth-child(7) { width: 150px; }
-
-    .custom-table th:nth-child(8),
-    .custom-table td:nth-child(8) { width: 120px; }
-
-    .custom-table th:nth-child(9),
-    .custom-table td:nth-child(9) { width: 100px; }
-
-    .custom-table tbody tr:nth-child(even) { background: #f9f9ff; }
-    .custom-table tbody tr:nth-child(odd) { background: #ffffff; }
+    .custom-table tbody tr:nth-child(even) {
+        background: #f9f9ff;
+    }
 
     .custom-table tbody tr:hover {
         background: rgba(49, 32, 205, 0.06);
-        transition: 0.3s;
     }
 
     .customer-info {
@@ -226,41 +192,27 @@
         min-width: 80px;
     }
 
-    .status-depress {
-        background: #E74C3C;
-    }
-
-    .status-progress {
-        background: #F1C40F;
-    }
-
-    .status-done {
-        background: #2ECC71;
-    }
-
-    .status-unknown {
-        background: #95A5A6;
-    }
+    .status-depress { background: #E74C3C; }
+    .status-progress { background: #F1C40F; color: #222; }
+    .status-done { background: #2ECC71; }
+    .status-unknown { background: #95A5A6; }
 
     .btn-detail {
         background: var(--primary);
         color: white;
-        border: none;
         padding: 8px 12px;
         border-radius: 8px;
         font-size: 12px;
         font-weight: 500;
+        text-decoration: none;
         display: inline-flex;
         align-items: center;
         gap: 4px;
         transition: all 0.3s ease;
-        text-decoration: none;
-        white-space: nowrap;
     }
 
     .btn-detail:hover {
         background: var(--primary-dark);
-        color: white;
     }
 
     .pagination-container {
@@ -314,38 +266,34 @@
                 </thead>
 
                 <tbody>
-                    @forelse($pemesanans as $index => $pemesanan)
+                    @forelse($pemesanans as $p)
                         <tr>
                             <td>{{ ($pemesanans->currentPage() - 1) * $pemesanans->perPage() + $loop->iteration }}</td>
-
                             <td>
                                 <div class="customer-info">
-                                    <div class="customer-name">{{ $pemesanan->customer->nama ?? 'Tidak Ada Nama' }}</div>
-                                    <div class="customer-phone">{{ $pemesanan->customer->telepon ?? '-' }}</div>
+                                    <div class="customer-name">{{ $p->user->name ?? '' }}</div>
+                                    <div class="customer-phone">{{ $p->user->phone ?? '' }}</div>
                                 </div>
                             </td>
-
-                            <td>{{ $pemesanan->layanan ?? '-' }}</td>
-                            <td>{{ $pemesanan->jadwal ?? '-' }}</td>
-                            <td>Rp {{ number_format($pemesanan->harga ?? 0, 0, ',', '.') }}</td>
-                            <td>{{ $pemesanan->metode ?? '-' }}</td>
-                            <td>{{ $pemesanan->teknisi->nama ?? '-' }}</td>
-
+                            <td>{{ $p->layanan->jenis_layanan ?? '-' }}</td>
+                            <td>{{ $p->jadwal_service ? \Carbon\Carbon::parse($p->jadwal_service)->format('d M Y, H:i') : '-' }}</td>
+                            <td>Rp {{ number_format($p->total_harga ?? 0, 0, ',', '.') }}</td>
+                            <td>{{ ucfirst($p->metode_pembayaran ?? '-') }}</td>
+                            <td>{{ $p->teknisi->nama ?? '-' }}</td>
                             <td>
-                                @if(($pemesanan->status ?? '') == 'depress')
-                                    <span class="status-badge status-depress">Depress</span>
-                                @elseif(($pemesanan->status ?? '') == 'progress')
-                                    <span class="status-badge status-progress">Progress</span>
-                                @elseif(($pemesanan->status ?? '') == 'done')
-                                    <span class="status-badge status-done">Selesai</span>
+                                @if($p->status == 'Diproses')
+                                    <span class="status-badge status-progress">Diproses</span>
+                                @elseif($p->status == 'Dikerjakan')
+                                    <span class="status-badge status-done">Dikerjakan</span>
+                                @elseif($p->status == 'Selesai')
+                                    <span class="status-badge status-depress">Selesai</span>
                                 @else
-                                    <span class="status-badge status-unknown">Tidak Diketahui</span>
+                                    <span class="status-badge status-unknown">{{ $p->status ?? 'Tidak Diketahui' }}</span>
                                 @endif
                             </td>
-
                             <td>
-                                <a href="#" class="btn-detail">
-                                    <i class="bi bi-eye"></i> Detail
+                                <a href="{{ route('admin.statuslayanan.edit', $p->id) }}" class="btn-detail">
+                                    <i class="bi bi-person-badge"></i> Pilih Teknisi
                                 </a>
                             </td>
                         </tr>

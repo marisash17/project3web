@@ -51,4 +51,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/teknisi/register', [ApiTeknisiController::class, 'register']);
     Route::get('/profile-teknisi', [ApiTeknisiController::class, 'profile']);
     
+    Route::post('/pemesanan', [PemesananController::class, 'store']);
 });
