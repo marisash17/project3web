@@ -23,7 +23,7 @@ class ApiLayananController extends Controller
                 'id' => $layanan->id,
                 'jenis_layanan' => $layanan->jenis_layanan,
                 'deskripsi' => $layanan->deskripsi,
-                'harga' => $layanan->harga,
+                'harga' => (int) $layanan->harga, // ✅ hanya ini yang ditambah, biar harga dibaca integer
                 'gambar' => $layanan->gambar ? asset('storage/' . $layanan->gambar) : null,
             ];
         });
@@ -47,7 +47,7 @@ class ApiLayananController extends Controller
                 'id' => $layanan->id,
                 'jenis_layanan' => $layanan->jenis_layanan,
                 'deskripsi' => $layanan->deskripsi,
-                'harga' => $layanan->harga,
+                'harga' => (int) $layanan->harga, // ✅ cuma tambahin casting di sini juga
                 'gambar' => $layanan->gambar ? asset('storage/' . $layanan->gambar) : null,
             ]
         ]);

@@ -25,10 +25,10 @@
         background: linear-gradient(135deg, rgba(255,255,255,0.97) 0%, rgba(255,255,255,0.92) 100%);
         backdrop-filter: blur(18px);
         border-radius: 20px;
-        padding: 30px 40px;
+        padding: 20px 30px;
         box-shadow: var(--card-shadow);
         border: 1px solid rgba(255,255,255,0.6);
-        width: 98%;
+        width: 90%;
         max-width: 1650px;
         animation: fadeInUp 0.6s ease-out;
     }
