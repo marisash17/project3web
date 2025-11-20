@@ -22,4 +22,9 @@ class Teknisi extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+     public function pemesanans()
+    {
+        return $this->hasMany(Pemesanan::class, 'teknisi_id');
+    }
 }

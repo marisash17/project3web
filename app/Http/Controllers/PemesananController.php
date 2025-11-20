@@ -120,7 +120,14 @@ class PemesananController extends Controller
     public function edit($id)
         {
             $pemesanan = Pemesanan::with(['layanan', 'user', 'teknisi'])->findOrFail($id);
-            $teknisis = Teknisi::all(); // ambil semua teknisi dari tabel teknisis
+            $teknisis = Teknisi::whereDoesntHave('pemesanans', function($query) {
+                $query->whereIn('status', [
+                    'Diproses',
+                    'Dikerjakan',
+                    'Selesai',
+                ]);
+            })->get();
+
             return view('admin.statuslayanan.edit', compact('pemesanan', 'teknisis'));
         }
 
