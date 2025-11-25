@@ -24,6 +24,9 @@ Route::get('/layanans/{id}', [ApiLayananController::class, 'show']);
 // Midtrans Payment
 Route::post('/midtrans/token', [MidtransController::class, 'getSnapToken']);
 
+Route::post('/cek-teknisi', [PemesananController::class, 'cekTeknisi']);
+
+
 // Semua route di bawah ini butuh token Sanctum
 Route::middleware('auth:sanctum')->group(function () {
 
