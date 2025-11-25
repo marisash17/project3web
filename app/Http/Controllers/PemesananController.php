@@ -80,7 +80,7 @@ class PemesananController extends Controller
     // 3️⃣ TEKNISI: UPDATE STATUS
     public function updateStatus(Request $request, $id)
     {
-        $request->validate(['status' => 'required|in:Diproses,Dikerjakan,Selesai']);
+        $request->validate(['status' => 'required|in:Diproses,Ditugaskan,Dikerjakan,Selesai']);
 
         $user = auth()->user();
         if ($user->role !== 'teknisi') {
@@ -123,6 +123,7 @@ class PemesananController extends Controller
             $teknisis = Teknisi::whereDoesntHave('pemesanans', function($query) {
                 $query->whereIn('status', [
                     'Diproses',
+                    'Ditugaskan',
                     'Dikerjakan',
                     'Selesai',
                 ]);
@@ -139,10 +140,49 @@ class PemesananController extends Controller
 
             $pemesanan = Pemesanan::findOrFail($id);
             $pemesanan->teknisi_id = $request->teknisi_id;
-            $pemesanan->status = 'Dikerjakan'; // ubah status otomatis jika perlu
+            $pemesanan->status = 'Ditugaskan'; // ubah status otomatis jika perlu
             $pemesanan->save();
 
             return redirect()->route('admin.statuslayanan.index')->with('success', 'Teknisi berhasil ditugaskan!');
         }
+
+        public function cekTeknisi(Request $request)
+        {
+            $request->validate([
+                'layanan_id' => 'required|exists:layanans,id',
+            ]);
+
+            // Ambil layanaasn yang dipilih
+            $layanan = \App\Models\Layanan::find($request->layanan_id);
+
+            if (!$layanan) {
+                return response()->json([
+                    'available' => false,
+                    'message' => 'Layanan tidak ditemukan.'
+                ], 404);
+            }
+
+            // Cari teknisi sesuai keahlian layanan
+            $teknisi = Teknisi::where('keahlian', $layanan->jenis_layanan)
+                ->whereDoesntHave('pemesanans', function($query) {
+                    $query->whereIn('status', ['Diproses','Ditugaskan', 'Dikerjakan','Selesai']);
+                })
+                ->first();
+
+            if ($teknisi) {
+                return response()->json([
+                    'available' => true,
+                    'message' => 'Teknisi tersedia.',
+                    'teknisi_id' => $teknisi->id,
+                    'teknisi_nama' => $teknisi->nama
+                ]);
+            }
+
+            return response()->json([
+                'available' => false,
+                'message' => 'Mohon maaf untuk layanan ini teknisi sedang bertugas, silahkan kembali beberapa hari kemudian'
+            ]);
+        }
+
 
 }

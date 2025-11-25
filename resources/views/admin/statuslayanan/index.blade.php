@@ -283,6 +283,8 @@
                             <td>
                                 @if($p->status == 'Diproses')
                                     <span class="status-badge status-progress">Diproses</span>
+                                @elseif($p->status == 'Ditugaskan')
+                                    <span class="status-badge status-progress" style="background:#3498db;">Ditugaskan</span>
                                 @elseif($p->status == 'Dikerjakan')
                                     <span class="status-badge status-done">Dikerjakan</span>
                                 @elseif($p->status == 'Selesai')
