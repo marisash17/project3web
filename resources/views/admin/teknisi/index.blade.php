@@ -34,280 +34,58 @@
         animation: fadeInUp 0.6s ease-out;
     }
 
-    .page-header {
-        text-align: center;
-        margin-bottom: 25px;
-    }
-
+    .page-header { text-align: center; margin-bottom: 25px; }
     .page-icon {
-        width: 80px;
-        height: 80px;
-        border-radius: 20px;
+        width: 80px; height: 80px; border-radius: 20px;
         background: var(--gradient);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: white;
-        font-size: 32px;
-        margin: 0 auto 15px;
+        display: flex; align-items: center; justify-content: center;
+        color: white; font-size: 32px; margin: 0 auto 15px;
         box-shadow: 0 6px 20px rgba(49, 32, 205, 0.3);
     }
-
     .page-title {
-        font-weight: 700;
-        font-size: 30px;
+        font-weight: 700; font-size: 30px;
         background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-light) 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
     }
-
-    .top-bar {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        flex-wrap: wrap;
-        margin-bottom: 25px;
-        gap: 10px;
-    }
-
+    .top-bar { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; margin-bottom: 25px; gap: 10px; }
     .back-btn {
-        background: var(--gradient);
-        color: white;
-        border: none;
-        padding: 12px 20px;
-        border-radius: 12px;
-        font-weight: 500;
-        text-decoration: none;
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 15px rgba(49, 32, 205, 0.2);
+        background: var(--gradient); color: white; border: none; padding: 12px 20px; border-radius: 12px;
+        font-weight: 500; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+        transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(49, 32, 205, 0.2);
     }
-
-    .back-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(49, 32, 205, 0.3);
-        color: white;
-    }
-
-    .search-form {
-        display: flex;
-        gap: 10px;
-        align-items: center;
-        max-width: 350px;
-        width: 100%;
-        justify-content: flex-end;
-    }
-
+    .back-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(49, 32, 205, 0.3); color: white; }
+    .search-form { display: flex; gap: 10px; align-items: center; max-width: 350px; width: 100%; justify-content: flex-end; }
     .search-input {
-        background: rgba(255, 255, 255, 0.9);
-        border: 1px solid rgba(49, 32, 205, 0.2);
-        border-radius: 12px;
-        padding: 12px 16px;
-        font-size: 14px;
-        width: 100%;
-        transition: all 0.3s ease;
+        background: rgba(255, 255, 255, 0.9); border: 1px solid rgba(49, 32, 205, 0.2); border-radius: 12px;
+        padding: 12px 16px; font-size: 14px; width: 100%; transition: all 0.3s ease;
     }
-
-    .search-input:focus {
-        outline: none;
-        border-color: var(--primary);
-        box-shadow: 0 0 0 3px rgba(49, 32, 205, 0.1);
-    }
-
-    .search-btn {
-        background: var(--gradient);
-        color: white;
-        border: none;
-        padding: 12px 16px;
-        border-radius: 12px;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 15px rgba(49, 32, 205, 0.2);
-    }
-
-    .search-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(49, 32, 205, 0.3);
-    }
-
-    /* ====== Tabel ====== */
-    .table-container {
-        background: rgba(255, 255, 255, 0.9);
-        border-radius: 16px;
-        overflow: hidden;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-    }
-
-    .custom-table {
-        width: 100%;
-        border-collapse: collapse;
-        table-layout: fixed; /* buat kolom sejajar */
-        font-size: 14px;
-    }
-
-    .custom-table thead {
-        background: var(--gradient);
-        color: white;
-    }
-
-    .custom-table th {
-        padding: 14px 12px;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.3px;
-        text-align: center;
-    }
-
-    .custom-table td {
-        padding: 12px 12px;
-        border-bottom: 1px solid #eee;
-        text-align: center;
-        vertical-align: middle;
-        word-break: break-word;
-    }
-
-    /* Tentukan lebar kolom biar sejajar - Disesuaikan untuk Teknisi */
-    .custom-table th:nth-child(1),
-    .custom-table td:nth-child(1) { width: 60px; } /* No */
-
-    .custom-table th:nth-child(2),
-    .custom-table td:nth-child(2) { width: 180px; } /* Nama Teknisi */
-
-    .custom-table th:nth-child(3),
-    .custom-table td:nth-child(3) { width: 220px; } /* Alamat */
-
-    .custom-table th:nth-child(4),
-    .custom-table td:nth-child(4) { width: 150px; } /* No. HP */
-
-    .custom-table th:nth-child(5),
-    .custom-table td:nth-child(5) { width: 130px; } /* Jenis Kelamin */
-
-    .custom-table th:nth-child(6),
-    .custom-table td:nth-child(6) { width: 200px; } /* Keahlian */
-
-    .custom-table th:nth-child(7),
-    .custom-table td:nth-child(7) { width: 180px; } /* Aksi */
-
-    .custom-table tbody tr:nth-child(even) { background: #f9f9ff; }
-    .custom-table tbody tr:nth-child(odd) { background: #ffffff; }
-
-    .custom-table tbody tr:hover {
-        background: rgba(49, 32, 205, 0.06);
-        transition: 0.3s;
-    }
-
-    .action-buttons {
-        display: flex;
-        justify-content: center;
-        gap: 10px;
-    }
-
-    .btn-edit, .btn-delete {
-        border: none;
-        padding: 8px 12px;
-        border-radius: 8px;
-        font-size: 12px;
-        font-weight: 500;
-        display: inline-flex;
-        align-items: center;
-        gap: 4px;
-        transition: all 0.3s ease;
-        text-decoration: none;
-        white-space: nowrap;
-    }
-
+    .search-input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(49, 32, 205, 0.1); }
+    .search-btn { background: var(--gradient); color: white; border: none; padding: 12px 16px; border-radius: 12px; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(49, 32, 205, 0.2); }
+    .table-container { background: rgba(255, 255, 255, 0.9); border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
+    .custom-table { width: 100%; border-collapse: collapse; table-layout: fixed; font-size: 14px; }
+    .custom-table thead { background: var(--gradient); color: white; }
+    .custom-table th { padding: 14px 12px; font-weight: 600; text-transform: uppercase; text-align: center; }
+    .custom-table td { padding: 12px 12px; border-bottom: 1px solid #eee; text-align: center; vertical-align: middle; }
+    .action-buttons { display: flex; justify-content: center; gap: 10px; }
     .btn-edit {
-        background: var(--primary);
-        color: white;
+        background: var(--primary); color: white; border: none; padding: 8px 12px; border-radius: 8px;
+        font-size: 12px; font-weight: 500; display: flex; align-items: center; gap: 4px; text-decoration: none;
     }
-
-    .btn-edit:hover {
-        background: var(--primary-dark);
-    }
-
-    .btn-delete {
-        background: #dc3545;
-        color: white;
-    }
-
-    .btn-delete:hover {
-        background: #c82333;
-    }
-
-    /* Alert Success */
-    .alert-success {
-        background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
-        border: 1px solid rgba(40, 167, 69, 0.2);
-        border-radius: 12px;
-        color: #155724;
-        padding: 16px 20px;
-        margin-bottom: 25px;
-        box-shadow: 0 4px 15px rgba(40, 167, 69, 0.1);
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-
-    .pagination-container {
-        display: flex;
-        justify-content: center;
-        margin-top: 20px;
-    }
-
-    @keyframes fadeInUp {
-        from { opacity: 0; transform: translateY(30px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* Responsive */
-    @media (max-width: 768px) {
-        .top-bar {
-            flex-direction: column;
-            align-items: stretch;
-        }
-        
-        .search-form {
-            max-width: 100%;
-            justify-content: stretch;
-        }
-        
-        .custom-table {
-            table-layout: auto;
-        }
-        
-        .custom-table th:nth-child(1),
-        .custom-table td:nth-child(1),
-        .custom-table th:nth-child(2),
-        .custom-table td:nth-child(2),
-        .custom-table th:nth-child(3),
-        .custom-table td:nth-child(3),
-        .custom-table th:nth-child(4),
-        .custom-table td:nth-child(4),
-        .custom-table th:nth-child(5),
-        .custom-table td:nth-child(5),
-        .custom-table th:nth-child(6),
-        .custom-table td:nth-child(6),
-        .custom-table th:nth-child(7),
-        .custom-table td:nth-child(7) {
-            width: auto;
-        }
-    }
+    .btn-delete { background: #dc3545; color: white; border: none; padding: 8px 12px; border-radius: 8px; font-size: 12px; }
 </style>
 
 <div class="teknisi-container">
     <div class="glass-card">
+
         <div class="top-bar">
             <a href="{{ route('admin.dashboard') }}" class="back-btn">
                 <i class="bi bi-arrow-left"></i> Kembali ke Dashboard
             </a>
 
             <form action="{{ route('admin.teknisi.index') }}" method="GET" class="search-form">
-                <input type="text" name="search" value="{{ request('search') }}"
-                       class="search-input" placeholder="Cari teknisi...">
-                <button type="submit" class="search-btn">
-                    <i class="bi bi-search"></i>
-                </button>
+                <input type="text" name="search" class="search-input" placeholder="Cari teknisi..." value="{{ request('search') }}">
+                <button type="submit" class="search-btn"><i class="bi bi-search"></i></button>
             </form>
         </div>
 
@@ -318,95 +96,65 @@
             <h1 class="page-title">Data Teknisi</h1>
         </div>
 
-        <!-- Success Message -->
-        @if(session('success'))
-            <div class="alert alert-success">
-                <i class="bi bi-check-circle-fill"></i>
-                {{ session('success') }}
-            </div>
-        @endif
-
         <div class="table-container">
             <table class="custom-table">
                 <thead>
                     <tr>
                         <th>No</th>
-                        <th>Nama Teknisi</th>
+                        <th>Nama</th>
                         <th>Alamat</th>
-                        <th>No. HP</th>
-                        <th>Jenis Kelamin</th>
+                        <th>No HP</th>
                         <th>Keahlian</th>
+                        <th>Pengalaman</th>
+                        <th>Sertifikat</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
+
                 <tbody>
-                    @forelse($teknisi as $index => $t)
+                    @forelse ($teknisi as $t)
                         <tr>
                             <td>{{ ($teknisi->currentPage() - 1) * $teknisi->perPage() + $loop->iteration }}</td>
-                            <td>{{ $t->nama }}</td>
-                            <td>{{ $t->alamat }}</td>
-                            <td>{{ $t->telepon }}</td>
-                            <td>{{ $t->jenis_kelamin }}</td>
+                            <td>{{ $t->user->name ?? '-' }}</td>
+                            <td>{{ $t->user->alamat ?? '-' }}</td>
+                            <td>{{ $t->user->no_hp ?? '-' }}</td>
                             <td>{{ $t->keahlian }}</td>
+                            <td>{{ $t->pengalaman }}</td>
+                            <td>
+                                @if($t->sertifikat)
+                                    <a href="{{ asset('storage/'.$t->sertifikat) }}" target="_blank">Lihat</a>
+                                @else
+                                    -
+                                @endif
+                            </td>
                             <td>
                                 <div class="action-buttons">
-                                    <a href="{{ route('admin.teknisi.edit', $t->id) }}" class="btn-edit">
-                                        <i class="bi bi-pencil-square"></i> Edit
+                                    <a href="{{ route('admin.teknisi.show', $t->id) }}" class="btn-edit">
+                                        <i class="bi bi-eye"></i> Lihat
                                     </a>
-                                    <form action="{{ route('admin.teknisi.destroy', $t->id) }}" method="POST"
-                                          onsubmit="return confirm('Yakin mau hapus?')">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn-delete">
-                                            <i class="bi bi-trash"></i> Hapus
-                                        </button>
+
+                                    <form action="{{ route('admin.teknisi.destroy', $t->id) }}" onsubmit="return confirm('Yakin mau hapus?')" method="POST">
+                                        @csrf @method('DELETE')
+                                        <button class="btn-delete"><i class="bi bi-trash"></i> Hapus</button>
                                     </form>
                                 </div>
                             </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="7" class="text-center py-4 text-muted">Tidak ada data</td>
+                            <td colspan="8" class="text-center py-4 text-muted">Tidak ada data</td>
                         </tr>
                     @endforelse
                 </tbody>
             </table>
         </div>
 
-        @if($teknisi->hasPages())
-            <div class="pagination-container">
+        @if ($teknisi->hasPages())
+            <div class="pagination-container mt-3">
                 {{ $teknisi->links() }}
             </div>
         @endif
     </div>
 </div>
 
-<script>
-    // Add interactive effects
-    document.addEventListener('DOMContentLoaded', function() {
-        const tableRows = document.querySelectorAll('.custom-table tbody tr');
-        
-        tableRows.forEach(row => {
-            row.addEventListener('mouseenter', function() {
-                this.style.transform = 'translateY(-1px)';
-            });
-            
-            row.addEventListener('mouseleave', function() {
-                this.style.transform = 'translateY(0)';
-            });
-        });
-
-        // Add focus effect to search input
-        const searchInput = document.querySelector('.search-input');
-        searchInput.addEventListener('focus', function() {
-            this.style.transform = 'translateY(-1px)';
-            this.style.boxShadow = '0 4px 15px rgba(49, 32, 205, 0.1)';
-        });
-
-        searchInput.addEventListener('blur', function() {
-            this.style.transform = 'translateY(0)';
-            this.style.boxShadow = 'none';
-        });
-    });
-</script>
 @endsection

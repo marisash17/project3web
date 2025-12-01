@@ -11,15 +11,13 @@ return new class extends Migration
         Schema::create('teknisis', function (Blueprint $table) {
             $table->id();
 
-            // 🔗 Relasi ke tabel users
+            // Relasi ke users
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
 
-            // 📋 Data teknisi lengkap
-            $table->string('nama');
-            $table->string('alamat');
-            $table->string('jenis_kelamin', 20);
-            $table->string('telepon');
+            // Data teknisi sesuai Flutter
             $table->string('keahlian');
+            $table->text('pengalaman');  // minimal 1 tahun dsb
+            $table->string('sertifikat')->nullable(); // file path
 
             $table->timestamps();
         });

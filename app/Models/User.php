@@ -27,9 +27,13 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-    // 🔹 Pakai username untuk login
     public function getAuthIdentifierName()
     {
         return 'username';
+    }
+
+    public function teknisi()
+    {
+        return $this->hasOne(Teknisi::class, 'user_id');
     }
 }

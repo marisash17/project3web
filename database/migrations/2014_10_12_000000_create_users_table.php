@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('name'); // digunakan untuk admin & customer
+            $table->string('name'); 
             $table->string('alamat')->nullable();
             $table->string('no_hp')->nullable();
             $table->enum('gender', ['Laki-laki', 'Perempuan'])->nullable();

@@ -9,7 +9,6 @@ use App\Models\StatusLayanan;
 
 class PemesananController extends Controller
 {
-    // 1️⃣ CUSTOMER: BUAT PESANAN
     public function store(Request $request)
     {
         $request->validate([
@@ -24,7 +23,6 @@ class PemesananController extends Controller
             return response()->json(['success' => false, 'message' => 'User belum login.'], 401);
         }
 
-        // 🔹 Simpan ke tabel "pemesanan"
         $pemesanan = Pemesanan::create([
             'user_id' => $user->id,
             'layanan_id' => $request->layanan_id,
@@ -35,13 +33,12 @@ class PemesananController extends Controller
             'status' => 'Diproses',
         ]);
 
-        // 🔹 Simpan juga ke tabel "status_layanan"
         $statusLayanan = new StatusLayanan();
         $statusLayanan->customer_id = $user->id;
         $statusLayanan->status = 'Menunggu Konfirmasi';
         $statusLayanan->tanggal_pemesanan = now();
         $statusLayanan->catatan = 'Pesanan baru dibuat';
-        $statusLayanan->metode = strtolower($request->metode_pembayaran); // 🟢 "cash" / "transfer"
+        $statusLayanan->metode = strtolower($request->metode_pembayaran); 
         $statusLayanan->save();
 
         return response()->json([
@@ -77,7 +74,6 @@ class PemesananController extends Controller
         ]);
     }
 
-    // 3️⃣ TEKNISI: UPDATE STATUS
     public function updateStatus(Request $request, $id)
     {
         $request->validate(['status' => 'required|in:Diproses,Ditugaskan,Dikerjakan,Selesai']);
@@ -93,7 +89,6 @@ class PemesananController extends Controller
             'teknisi_id' => $user->id,
         ]);
 
-        // 🔹 Update juga status layanan
         $statusLayanan = StatusLayanan::where('customer_id', $pemesanan->user_id)->latest()->first();
         if ($statusLayanan) {
             $statusLayanan->status = $request->status;
@@ -107,7 +102,6 @@ class PemesananController extends Controller
         ]);
     }
 
-    // 4️⃣ ADMIN: LIHAT SEMUA PESANAN
     public function index()
     {
         $orders = Pemesanan::with(['user', 'teknisi', 'layanan'])
@@ -152,7 +146,6 @@ class PemesananController extends Controller
                 'layanan_id' => 'required|exists:layanans,id',
             ]);
 
-            // Ambil layanaasn yang dipilih
             $layanan = \App\Models\Layanan::find($request->layanan_id);
 
             if (!$layanan) {
@@ -162,7 +155,6 @@ class PemesananController extends Controller
                 ], 404);
             }
 
-            // Cari teknisi sesuai keahlian layanan
             $teknisi = Teknisi::where('keahlian', $layanan->jenis_layanan)
                 ->whereDoesntHave('pemesanans', function($query) {
                     $query->whereIn('status', ['Diproses','Ditugaskan', 'Dikerjakan','Selesai']);

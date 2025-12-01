@@ -11,11 +11,9 @@ class Teknisi extends Model
 
     protected $fillable = [
         'user_id',
-        'nama',
-        'alamat',
-        'jenis_kelamin',
-        'telepon',
         'keahlian',
+        'pengalaman',
+        'sertifikat',
     ];
 
     public function user()
@@ -23,7 +21,7 @@ class Teknisi extends Model
         return $this->belongsTo(User::class);
     }
 
-     public function pemesanans()
+    public function pemesanans()
     {
         return $this->hasMany(Pemesanan::class, 'teknisi_id');
     }

@@ -52,7 +52,9 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // 🔹 Teknisi tambahan
     Route::post('/teknisi/register', [ApiTeknisiController::class, 'register']);
-    Route::get('/profile-teknisi', [ApiTeknisiController::class, 'profile']);
+    Route::get('/teknisi/status', [ApiTeknisiController::class, 'status']);
+    Route::get('/teknisi/profile', [ApiTeknisiController::class, 'profile']);
+    Route::post('/teknisi/update-profile', [ApiTeknisiController::class, 'updateProfile']);
     
     Route::post('/pemesanan', [PemesananController::class, 'store']);
 });

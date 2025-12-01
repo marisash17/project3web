@@ -17,9 +17,6 @@ return new class extends Migration
             $table->text('catatan')->nullable();
             $table->timestamps();
 
-            // Optional: foreign key
-            // $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');
-            // $table->foreign('teknisi_id')->references('id')->on('teknisis')->onDelete('cascade');
         });
     }
 
