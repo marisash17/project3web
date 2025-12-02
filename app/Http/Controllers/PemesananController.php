@@ -50,29 +50,31 @@ class PemesananController extends Controller
 
     // 2️⃣ CUSTOMER: LIHAT RIWAYAT
     public function myOrders()
-    {
-        $user = auth()->user();
+{
+    $user = auth()->user();
 
-        if (!$user) {
-            return response()->json([
-                'success' => false,
-                'message' => 'User belum login.',
-            ], 401);
-        }
-
-        $orders = Pemesanan::with([
-            'layanan:id,jenis_layanan',
-            'teknisi:id,nama',
-        ])
-            ->where('user_id', $user->id)
-            ->orderByDesc('created_at')
-            ->get();
-
+    if (!$user) {
         return response()->json([
-            'success' => true,
-            'data' => $orders,
-        ]);
+            'success' => false,
+            'message' => 'User belum login.',
+        ], 401);
     }
+
+    $orders = Pemesanan::with([
+        'layanan:id,jenis_layanan',
+        'teknisi:id,user_id',
+        'teknisi.user:id,name',
+    ])
+        ->where('user_id', $user->id)
+        ->orderByDesc('created_at')
+        ->get();
+
+    return response()->json([
+        'success' => true,
+        'data' => $orders,
+    ]);
+}
+
 
     public function updateStatus(Request $request, $id)
     {
@@ -86,7 +88,8 @@ class PemesananController extends Controller
         $pemesanan = Pemesanan::findOrFail($id);
         $pemesanan->update([
             'status' => $request->status,
-            'teknisi_id' => $user->id,
+            'teknisi_id' => $user->teknisi->id,
+
         ]);
 
         $statusLayanan = StatusLayanan::where('customer_id', $pemesanan->user_id)->latest()->first();
@@ -104,9 +107,13 @@ class PemesananController extends Controller
 
     public function index()
     {
-        $orders = Pemesanan::with(['user', 'teknisi', 'layanan'])
-            ->orderByDesc('created_at')
-            ->get();
+        $orders = Pemesanan::with([
+    'user:id,name',
+    'teknisi:id,user_id',
+    'teknisi.user:id,name',
+    'layanan'
+])->orderByDesc('created_at')->get();
+
 
         return response()->json(['success' => true, 'data' => $orders]);
     }
@@ -146,6 +153,7 @@ class PemesananController extends Controller
                 'layanan_id' => 'required|exists:layanans,id',
             ]);
 
+            // Ambil layanan
             $layanan = \App\Models\Layanan::find($request->layanan_id);
 
             if (!$layanan) {
@@ -155,26 +163,42 @@ class PemesananController extends Controller
                 ], 404);
             }
 
-            $teknisi = Teknisi::where('keahlian', $layanan->jenis_layanan)
+            // Cek apakah ada teknisi yg sesuai keahliannya
+            $teknisiQuery = Teknisi::where('keahlian', 'LIKE', '%' . $layanan->jenis_layanan . '%');
+
+
+            // ❗ Kalau teknisi dengan keahlian itu TIDAK ADA SAMA SEKALI
+            if (!$teknisiQuery->exists()) {
+                return response()->json([
+                    'available' => false,
+                    'message' => 'Tidak ada teknisi untuk layanan ini. Silakan kembali beberapa saat kemudian'
+                ]);
+            }
+
+            // Cari teknisi yg free (tidak sedang menangani order lain)
+            $teknisi = $teknisiQuery
                 ->whereDoesntHave('pemesanans', function($query) {
-                    $query->whereIn('status', ['Diproses','Ditugaskan', 'Dikerjakan','Selesai']);
+                    $query->whereIn('status', ['Diproses', 'Ditugaskan', 'Dikerjakan', 'Selesai']);
                 })
                 ->first();
 
+            // ✔ Jika teknisi tersedia
             if ($teknisi) {
                 return response()->json([
                     'available' => true,
                     'message' => 'Teknisi tersedia.',
                     'teknisi_id' => $teknisi->id,
-                    'teknisi_nama' => $teknisi->nama
+                    'teknisi_nama' => $teknisi->user->name
+
                 ]);
             }
 
+            // ❌ Teknisi ada tapi lagi sibuk semua
             return response()->json([
                 'available' => false,
-                'message' => 'Mohon maaf untuk layanan ini teknisi sedang bertugas, silahkan kembali beberapa hari kemudian'
+                'message' => 'Semua teknisi untuk layanan ini sedang bertugas. Silakan cek kembali beberapa jam kemudian'
             ]);
         }
-
-
 }
+
+

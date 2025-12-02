@@ -279,7 +279,8 @@
                             <td>{{ $p->jadwal_service ? \Carbon\Carbon::parse($p->jadwal_service)->format('d M Y, H:i') : '-' }}</td>
                             <td>Rp {{ number_format($p->total_harga ?? 0, 0, ',', '.') }}</td>
                             <td>{{ ucfirst($p->metode_pembayaran ?? '-') }}</td>
-                            <td>{{ $p->teknisi->nama ?? '-' }}</td>
+                            <td>{{ $p->teknisi->user->name ?? '-' }}</td>
+
                             <td>
                                 @if($p->status == 'Diproses')
                                     <span class="status-badge status-progress">Diproses</span>

@@ -32,7 +32,7 @@ public function layanan()
 
 public function teknisi()
 {
-    return $this->belongsTo(Teknisi::class, 'teknisi_id');
+    return $this->belongsTo(Teknisi::class);
 }
 
 }
