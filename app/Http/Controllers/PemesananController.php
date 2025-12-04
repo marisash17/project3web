@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Teknisi;
 use App\Models\Pemesanan;
+use App\Models\Notifikasi;
 use Illuminate\Http\Request;
 use App\Models\StatusLayanan;
+use Illuminate\Support\Facades\Log;
 
 class PemesananController extends Controller
 {
@@ -199,6 +201,51 @@ class PemesananController extends Controller
                 'message' => 'Semua teknisi untuk layanan ini sedang bertugas. Silakan cek kembali beberapa jam kemudian'
             ]);
         }
+
+        public function tolakPekerjaan(Request $request)
+{
+    Log::info(">>> FUNGSI TOLAK DIPANGGIL", $request->all());
+
+    $request->validate([
+        'pemesanan_id' => 'required|exists:pemesanans,id',
+    ]);
+
+    // Ambil pesanan + relasi
+    $pemesanan = Pemesanan::with(['user','layanan'])->find($request->pemesanan_id);
+
+    // Update status pemesanan
+    $pemesanan->update([
+        'status' => 'Ditolak Teknisi',
+        'teknisi_id' => null,
+    ]);
+
+    // Ambil data yang benar
+    $namaTeknisi  = auth()->user()->name ?? 'Teknisi';
+    $namaCustomer = $pemesanan->user->name ?? 'Customer';
+    $namaLayanan  = $pemesanan->layanan->jenis_layanan ?? '-';
+    $jadwal       = $pemesanan->jadwal_service
+                        ? \Carbon\Carbon::parse($pemesanan->jadwal_service)->format('d M Y H:i')
+                        : '-';
+
+    // Rangkai pesan notifikasi
+    $pesanNotif = "Pesanan #{$pemesanan->id} untuk layanan {$namaLayanan} ditolak oleh {$namaTeknisi}. ".
+                  "Customer: {$namaCustomer}, Jadwal: {$jadwal}.";
+
+    // Simpan notifikasi
+    Notifikasi::create([
+        'pemesanan_id' => $pemesanan->id,
+        'judul'        => 'Pesanan Ditolak Teknisi',
+        'pesan'        => $pesanNotif,
+        'is_read'      => false,
+    ]);
+
+    Log::info(">>> NOTIFIKASI DISIMPAN", ['pesan' => $pesanNotif]);
+
+    return response()->json([
+        'success' => true,
+        'message' => 'Pekerjaan berhasil ditolak',
+    ]);
+}
 }
 
 

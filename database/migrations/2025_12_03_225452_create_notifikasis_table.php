@@ -9,13 +9,14 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
+   public function up(): void
 {
     Schema::create('notifikasis', function (Blueprint $table) {
         $table->id();
+        $table->unsignedBigInteger('pemesanan_id');
         $table->string('judul');
         $table->text('pesan');
-        $table->enum('status', ['Belum Dibaca', 'Sudah Dibaca'])->default('Belum Dibaca');
+        $table->boolean('is_read')->default(false);
         $table->timestamps();
     });
 }

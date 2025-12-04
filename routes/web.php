@@ -10,6 +10,7 @@ use App\Http\Controllers\PemesananController;
 use App\Http\Controllers\NotifikasiController;
 use App\Http\Controllers\PendapatanController;
 use App\Http\Controllers\StatusLayananController;
+use App\Http\Controllers\AdminNotifikasiController;
 
 
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
@@ -38,7 +39,7 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::resource('teknisi', TeknisiController::class)->names('admin.teknisi');
     Route::resource('teknisi', TeknisiController::class);
     Route::resource('layanan', LayananController::class);
-    Route::resource('notifikasi', NotifikasiController::class);
+    
     
      Route::get('/pesanan', [StatusLayananController::class, 'index'])
         ->name('statuslayanan.index');
@@ -64,3 +65,7 @@ Route::get('/midtrans/unfinish', function () {
 Route::get('/admin/statuslayanan/{id}/edit', [PemesananController::class, 'edit'])->name('admin.statuslayanan.edit');
 Route::post('/admin/statuslayanan/{id}/assign-teknisi', [PemesananController::class, 'assignTeknisi'])->name('admin.statuslayanan.assign');
 
+Route::get('/admin/notifikasi', [AdminNotifikasiController::class, 'index'])->name('admin.notifikasi.index');
+Route::post('/admin/notifikasi/read/{id}', [AdminNotifikasiController::class, 'read'])->name('admin.notifikasi.read');
+Route::delete('/admin/notifikasi/{id}', [AdminNotifikasiController::class, 'destroy'])
+    ->name('admin.notifikasi.destroy');

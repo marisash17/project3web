@@ -3,10 +3,11 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ApiAuthController;
+use App\Http\Controllers\MidtransController;
 use App\Http\Controllers\PemesananController;
 use App\Http\Controllers\ApiLayananController;
 use App\Http\Controllers\ApiTeknisiController;
-use App\Http\Controllers\MidtransController;
+use App\Http\Controllers\StatusLayananController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,6 +27,7 @@ Route::post('/midtrans/token', [MidtransController::class, 'getSnapToken']);
 
 Route::post('/cek-teknisi', [PemesananController::class, 'cekTeknisi']);
 
+Route::post('/pekerjaan/tolak', [PemesananController::class, 'tolakPekerjaan']);
 
 // Semua route di bawah ini butuh token Sanctum
 Route::middleware('auth:sanctum')->group(function () {
@@ -55,6 +57,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/teknisi/status', [ApiTeknisiController::class, 'status']);
     Route::get('/teknisi/profile', [ApiTeknisiController::class, 'profile']);
     Route::post('/teknisi/update-profile', [ApiTeknisiController::class, 'updateProfile']);
+
+    Route::get('/pekerjaan-baru', [StatusLayananController::class, 'getPekerjaanBaru']);
+    Route::post('/pekerjaan/{id}/terima', [StatusLayananController::class, 'terimaPekerjaan']);
+    Route::post('/pekerjaan/{id}/selesai', [StatusLayananController::class, 'selesaiPekerjaan']);
     
-    Route::post('/pemesanan', [PemesananController::class, 'store']);
+
 });

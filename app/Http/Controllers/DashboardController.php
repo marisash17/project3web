@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\User;
-use App\Models\Teknisi;
 use App\Models\Layanan;
+use App\Models\Teknisi;
 use App\Models\Pemesanan;
+use App\Models\Notifikasi;
 use App\Models\Pendapatan;
+use Illuminate\Http\Request;
 
 
 class DashboardController extends Controller
@@ -45,5 +46,19 @@ $recentOrders = Pemesanan::with(['user', 'layanan', 'teknisi'])
             'totalPendapatan',
             'recentOrders' // tambahkan ini
         ));
+
+        $notifikasis = Notifikasi::orderBy('created_at', 'desc')
+        ->limit(7)
+        ->get();
+
+return view('admin.dashboard', [
+    'totalCustomers' => $totalCustomers,
+    'totalTeknisi' => $totalTeknisi,
+    'totalPendapatan' => $totalPendapatan,
+    'totalLayanan' => $totalLayanan,
+    'recentOrders' => $recentOrders,
+    'notifikasis' => $notifikasis,
+]);
+
     }
 }

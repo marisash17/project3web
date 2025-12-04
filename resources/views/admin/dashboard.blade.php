@@ -686,4 +686,100 @@
         });
     });
 </script>
+
+<!-- Sidebar Notifikasi -->
+<style>
+    .notif-sidebar {
+        position: fixed;
+        right: 20px;
+        top: 120px;
+        width: 320px;
+        background: white;
+        border-radius: 18px;
+        box-shadow: 0 6px 25px rgba(0,0,0,0.12);
+        border: 1px solid #f0f0f0;
+        padding: 20px;
+        z-index: 999;
+        max-height: 70vh;
+        overflow-y: auto;
+    }
+
+    .notif-title {
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .notif-item {
+        padding: 12px 10px;
+        border-radius: 12px;
+        background: #fafafa;
+        margin-bottom: 10px;
+        border-left: 4px solid var(--primary);
+    }
+
+    .notif-item.unread {
+        background: #eef2ff;
+        border-left: 4px solid #4338ca;
+    }
+
+    .notif-item h4 {
+        font-size: 14px;
+        font-weight: 700;
+        margin: 0 0 4px 0;
+    }
+
+    .notif-item p {
+        font-size: 12px;
+        margin: 0;
+        color: #555;
+    }
+
+    .notif-time {
+        font-size: 11px;
+        color: #777;
+        margin-top: 5px;
+    }
+
+    .notif-see-all {
+        display: block;
+        margin-top: 15px;
+        text-align: center;
+        background: var(--gradient);
+        color: white;
+        padding: 10px;
+        border-radius: 10px;
+        text-decoration: none;
+        font-weight: 600;
+    }
+</style>
+
+<div class="notif-sidebar">
+    <div class="notif-title">
+        <i class="bi bi-bell-fill" style="color: var(--primary);"></i>
+        Notifikasi Terbaru
+    </div>
+
+    @if(isset($notifikasis) && count($notifikasis) > 0)
+        @foreach($notifikasis as $notif)
+            <div class="notif-item {{ $notif->is_read ? '' : 'unread' }}">
+                <h4>{{ $notif->judul }}</h4>
+                <p>{{ $notif->pesan }}</p>
+                <div class="notif-time">
+                    {{ $notif->created_at->diffForHumans() }}
+                </div>
+            </div>
+        @endforeach
+    @else
+        
+    @endif
+
+    <a href="{{ route('admin.notifikasi.index') }}" class="notif-see-all">
+        Lihat Semua
+    </a>
+</div>
+
 @endsection
