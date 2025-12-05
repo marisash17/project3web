@@ -29,6 +29,7 @@ Route::post('/cek-teknisi', [PemesananController::class, 'cekTeknisi']);
 
 Route::post('/pekerjaan/tolak', [PemesananController::class, 'tolakPekerjaan']);
 
+
 // Semua route di bawah ini butuh token Sanctum
 Route::middleware('auth:sanctum')->group(function () {
 
@@ -59,8 +60,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/teknisi/update-profile', [ApiTeknisiController::class, 'updateProfile']);
 
     Route::get('/pekerjaan-baru', [StatusLayananController::class, 'getPekerjaanBaru']);
-    Route::post('/pekerjaan/{id}/terima', [StatusLayananController::class, 'terimaPekerjaan']);
-    Route::post('/pekerjaan/{id}/selesai', [StatusLayananController::class, 'selesaiPekerjaan']);
-    
+    Route::post('/pekerjaan/terima', [PemesananController::class, 'terima']);
+    Route::get('/pekerjaan/dikerjakan', [PemesananController::class, 'sedangDikerjakan']);
+    Route::post('/pekerjaan/selesai/{pemesanan}', [PemesananController::class, 'tandaiSelesai']);
+
+    Route::get('/pekerjaan/riwayat', [PemesananController::class, 'pekerjaanSelesai']);
 
 });

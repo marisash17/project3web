@@ -128,7 +128,6 @@ class PemesananController extends Controller
                     'Diproses',
                     'Ditugaskan',
                     'Dikerjakan',
-                    'Selesai',
                 ]);
             })->get();
 
@@ -180,7 +179,7 @@ class PemesananController extends Controller
             // Cari teknisi yg free (tidak sedang menangani order lain)
             $teknisi = $teknisiQuery
                 ->whereDoesntHave('pemesanans', function($query) {
-                    $query->whereIn('status', ['Diproses', 'Ditugaskan', 'Dikerjakan', 'Selesai']);
+                    $query->whereIn('status', ['Diproses', 'Ditugaskan', 'Dikerjakan']);
                 })
                 ->first();
 
@@ -246,6 +245,99 @@ class PemesananController extends Controller
         'message' => 'Pekerjaan berhasil ditolak',
     ]);
 }
+
+public function terima(Request $request)
+{
+    $request->validate([
+        'pemesanan_id' => 'required|exists:pemesanans,id',
+    ]);
+
+    $user = auth()->user(); // teknisi yang sedang login
+
+    // Ambil data teknisi berdasarkan user_id
+    $teknisi = \App\Models\Teknisi::where('user_id', $user->id)->first();
+
+    if (!$teknisi) {
+        return response()->json(['message' => 'Akun ini bukan teknisi'], 400);
+    }
+
+    // Ambil data pesanan
+    $pemesanan = \App\Models\Pemesanan::find($request->pemesanan_id);
+
+    // Update pesanan
+    $pemesanan->teknisi_id = $teknisi->id; // <-- PERBAIKAN
+    $pemesanan->status = 'Dikerjakan';
+    $pemesanan->save();
+
+    return response()->json([
+        'message' => 'Pekerjaan berhasil diterima',
+        'data' => $pemesanan
+    ], 200);
+}
+
+
+public function sedangDikerjakan()
+{
+    $user = auth()->user();
+
+    // ambil teknisi dari user_id
+    $teknisi = \App\Models\Teknisi::where('user_id', $user->id)->first();
+
+    if (!$teknisi) {
+        return response()->json([]);
+    }
+
+    $data = \App\Models\Pemesanan::with(['user', 'layanan'])
+        ->where('teknisi_id', $teknisi->id)   // ← PERBAIKAN PENTING
+        ->where('status', 'Dikerjakan')
+        ->get();
+
+    return response()->json($data);
+}
+
+
+
+public function tandaiSelesai($pemesanan_id)
+{
+    $pemesanan = Pemesanan::find($pemesanan_id);
+
+    if (!$pemesanan) {
+        return response()->json(['message' => 'Pemesanan tidak ditemukan'], 404);
+    }
+
+    $pemesanan->status = 'Selesai';
+    $pemesanan->save();
+
+    return response()->json([
+        'message' => 'Pekerjaan berhasil diselesaikan',
+        'data' => $pemesanan
+    ]);
+}
+
+
+public function pekerjaanSelesai()
+{
+    $user = auth()->user();
+
+    // Ambil teknisi berdasarkan user_id
+    $teknisi = \App\Models\Teknisi::where('user_id', $user->id)->first();
+
+    if (!$teknisi) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Anda belum terdaftar sebagai teknisi.'
+        ], 400);
+    }
+
+    $data = \App\Models\Pemesanan::with(['user', 'layanan', 'teknisi.user'])
+        ->where('teknisi_id', $teknisi->id)
+        ->where('status', 'Selesai')
+        ->get();
+
+    return response()->json($data);
+}
+
+
 }
 
 
