@@ -415,7 +415,7 @@
             <div class="page-icon">
                 <i class="bi bi-cash-coin"></i>
             </div>
-            <h1 class="page-title">Kelola Transaksi</h1>
+            <h1 class="page-title">Kelola Pendapatan</h1>
         </div>
 
         <!-- Success Message -->
@@ -428,7 +428,7 @@
 
         <!-- Total Pendapatan Card -->
         <div class="total-card">
-            <div class="total-label">Total Transaksi</div>
+            <div class="total-label">Total Pendapatan Keseluruhan</div>
             <div class="total-amount">Rp {{ number_format($totalPendapatan, 0, ',', '.') }}</div>
         </div>
 
@@ -452,51 +452,34 @@
 
         <!-- Table Container -->
         <div class="table-container">
-            <table class="custom-table">
-                <thead>
-                    <tr>
-                        <th>No</th>
-                        <th>Tanggal</th>
-                        <th>Nama Customer</th>
-                        <th>Booking Layanan</th>
-                        <th>Total</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse($pendapatans as $index => $p)
-                        <tr>
-                            <td class="fw-bold">{{ $index + 1 }}</td>
-                            <td>
-                                <i class="bi bi-calendar3 table-icon"></i>
-                                {{ \Carbon\Carbon::parse($p->tanggal)->translatedFormat('d F Y') }}
-                            </td>
-                            <td>
-                                <i class="bi bi-person table-icon"></i>
-                                {{ $p->customer->nama ?? '-' }}
-                            </td>
-                            <td>
-                                <i class="bi bi-bag table-icon"></i>
-                                {{ $p->layanan->jenis_layanan ?? '-' }}
-                            </td>
-                            <td class="text-success">
-                                <i class="bi bi-currency-dollar table-icon"></i>
-                                Rp {{ number_format($p->jumlah, 0, ',', '.') }}
-                            </td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="5">
-                                <div class="empty-state">
-                                    <i class="bi bi-receipt"></i>
-                                    <h5>Belum ada data transaksi</h5>
-                                    <p class="text-muted">Transaksi akan muncul di sini ketika sudah ada data</p>
-                                </div>
-                            </td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
-        </div>
+    <table class="custom-table">
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>Nama Teknisi</th>
+                <th>Keahlian</th>
+                <th>Total Pekerjaan</th>
+                <th>Total Pendapatan</th>
+            </tr>
+        </thead>
+        <tbody>
+            @forelse ($pendapatanPerTeknisi as $row)
+            <tr>
+                <td>{{ $loop->iteration }}</td>
+                <td>{{ $row->nama }}</td>
+                <td>{{ $row->keahlian ?? '-' }}</td>
+                <td>{{ $row->total_transaksi }}</td>
+                <td>Rp {{ number_format($row->total_pendapatan, 0, ',', '.') }}</td>
+            </tr>
+            @empty
+            <tr>
+                <td colspan="5" class="text-center py-4">Tidak ada data pendapatan</td>
+            </tr>
+            @endforelse
+        </tbody>
+    </table>
+</div>
+
     </div>
 </div>
 

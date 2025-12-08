@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Teknisi;
 use App\Models\Pemesanan;
 use App\Models\Notifikasi;
+use App\Models\Pendapatan;
 use Illuminate\Http\Request;
 use App\Models\StatusLayanan;
 use Illuminate\Support\Facades\Log;
@@ -299,20 +300,34 @@ public function sedangDikerjakan()
 
 public function tandaiSelesai($pemesanan_id)
 {
-    $pemesanan = Pemesanan::find($pemesanan_id);
+    // Ambil data dengan relasi (WAJIB)
+    $pemesanan = Pemesanan::with(['layanan', 'user', 'teknisi'])->find($pemesanan_id);
 
     if (!$pemesanan) {
         return response()->json(['message' => 'Pemesanan tidak ditemukan'], 404);
     }
 
-    $pemesanan->status = 'Selesai';
+    // Update status selesai
+    $pemesanan->status = 'Selesai'; // atau status_id = StatusLayanan::SELESAI;
     $pemesanan->save();
 
+    // Simpan pendapatan teknisi
+    Pendapatan::create([
+        'teknisi_id'   => $pemesanan->teknisi_id,
+        'customer_id'  => $pemesanan->user_id,
+        'pemesanan_id' => $pemesanan->id,
+        'layanan_id'   => $pemesanan->layanan_id,
+        'jumlah'       => $pemesanan->total_harga,
+        'tanggal'      => now(),
+        'keterangan'   => "Pendapatan dari layanan: " . $pemesanan->layanan->jenis_layanan,
+    ]);
+
     return response()->json([
-        'message' => 'Pekerjaan berhasil diselesaikan',
+        'message' => 'Pekerjaan berhasil diselesaikan dan pendapatan dicatat',
         'data' => $pemesanan
     ]);
 }
+
 
 
 public function pekerjaanSelesai()

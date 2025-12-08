@@ -58,7 +58,7 @@
             <a href="{{ route('admin.pendapatan.index') }}"
                class="nav-link {{ request()->is('admin/pendapatan*') ? 'active' : '' }}">
                     <i class="bi bi-cash-coin"></i>
-                    <span>Kelola Transaksi</span>
+                    <span>Kelola Pendapatan</span>
             </a>
         </div>
     </nav>

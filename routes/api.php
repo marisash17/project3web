@@ -7,6 +7,7 @@ use App\Http\Controllers\MidtransController;
 use App\Http\Controllers\PemesananController;
 use App\Http\Controllers\ApiLayananController;
 use App\Http\Controllers\ApiTeknisiController;
+use App\Http\Controllers\ApiPendapatanController;
 use App\Http\Controllers\StatusLayananController;
 
 /*
@@ -65,5 +66,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/pekerjaan/selesai/{pemesanan}', [PemesananController::class, 'tandaiSelesai']);
 
     Route::get('/pekerjaan/riwayat', [PemesananController::class, 'pekerjaanSelesai']);
+
+    Route::get('/pendapatan/total/{id}', [ApiPendapatanController::class, 'total']);
+    Route::get('/pendapatan/riwayat/{id}', [ApiPendapatanController::class, 'riwayat']);
 
 });

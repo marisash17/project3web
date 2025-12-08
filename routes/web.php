@@ -69,3 +69,5 @@ Route::get('/admin/notifikasi', [AdminNotifikasiController::class, 'index'])->na
 Route::post('/admin/notifikasi/read/{id}', [AdminNotifikasiController::class, 'read'])->name('admin.notifikasi.read');
 Route::delete('/admin/notifikasi/{id}', [AdminNotifikasiController::class, 'destroy'])
     ->name('admin.notifikasi.destroy');
+
+

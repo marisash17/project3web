@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Pendapatan;
 use Carbon\Carbon;
+use App\Models\Teknisi;
+use App\Models\Pendapatan;
+use Illuminate\Http\Request;
 
 class PendapatanController extends Controller
 {
@@ -12,30 +13,43 @@ class PendapatanController extends Controller
      * Menampilkan daftar pendapatan
      */
     public function index(Request $request)
-    {
-        // Ambil input bulan (format: YYYY-MM)
-        $bulan = $request->input('bulan');
+{
+    $bulan = $request->bulan; // format: 2024-11
 
-        // Query data pendapatan
-        $query = Pendapatan::query();
+    $query = Teknisi::leftJoin('users', 'users.id', '=', 'teknisis.user_id')
+        ->leftJoin('pendapatans', 'pendapatans.teknisi_id', '=', 'teknisis.id');
 
-        // Jika ada filter bulan
-        if ($bulan) {
-            $query->whereMonth('tanggal', Carbon::parse($bulan)->month)
-                  ->whereYear('tanggal', Carbon::parse($bulan)->year);
-        }
+    // Jika admin memilih bulan tertentu
+    if ($bulan) {
+        [$tahun, $bulanAngka] = explode('-', $bulan);
 
-        // Ambil data dengan relasi customer & layanan
-        $pendapatans = $query->with(['customer', 'layanan'])->get();
-
-        // Hitung total pendapatan
-        $totalPendapatan = $pendapatans->sum('jumlah');
-
-        // Kirim data ke view
-        return view('admin.pendapatan.index', [
-            'pendapatans'     => $pendapatans,
-            'totalPendapatan' => $totalPendapatan,
-            'bulan'           => $bulan
-        ]);
+        $query->whereYear('pendapatans.created_at', $tahun)
+              ->whereMonth('pendapatans.created_at', $bulanAngka);
     }
+
+    $pendapatanPerTeknisi = $query->selectRaw('
+            teknisis.id,
+            users.name as nama,
+            teknisis.keahlian,
+            COUNT(pendapatans.id) as total_transaksi,
+            COALESCE(SUM(pendapatans.jumlah), 0) as total_pendapatan
+        ')
+        ->groupBy('teknisis.id', 'users.name', 'teknisis.keahlian')
+        ->get();
+
+    // Filter total pendapatan seluruh teknisi berdasarkan bulan juga
+    if ($bulan) {
+        $totalPendapatan = Pendapatan::whereYear('created_at', $tahun)
+            ->whereMonth('created_at', $bulanAngka)
+            ->sum('jumlah');
+    } else {
+        $totalPendapatan = Pendapatan::sum('jumlah');
+    }
+
+    return view('admin.pendapatan.index', [
+        'pendapatanPerTeknisi' => $pendapatanPerTeknisi,
+        'totalPendapatan' => $totalPendapatan
+    ]);
+}
+
 }

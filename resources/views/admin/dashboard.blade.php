@@ -646,7 +646,7 @@
             <div class="action-icon">
                 <i class="bi bi-cash-stack"></i>
             </div>
-            <div class="action-text">Kelola Transaksi</div>
+            <div class="action-text">Kelola Pendapatan</div>
         </a>
     </div>
 </div>
