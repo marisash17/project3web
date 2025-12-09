@@ -19,7 +19,9 @@ class DashboardController extends Controller
         $totalCustomers  = User::where('role', 'customer')->count();
         $totalTeknisi    = Teknisi::count();
         $totalLayanan    = Layanan::count();
-        $totalPendapatan = Pendapatan::sum('jumlah'); // ganti kolom sesuai nama field di tabel pendapatan
+        $totalPendapatan = Pemesanan::where('status', 'Selesai')
+    ->sum('total_harga');
+
 
         // Ambil 5 pemesanan terbaru
 $recentOrders = Pemesanan::with(['user', 'layanan', 'teknisi'])

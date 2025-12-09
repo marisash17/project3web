@@ -300,34 +300,35 @@ public function sedangDikerjakan()
 
 public function tandaiSelesai($pemesanan_id)
 {
-    // Ambil data dengan relasi (WAJIB)
-    $pemesanan = Pemesanan::with(['layanan', 'user', 'teknisi'])->find($pemesanan_id);
+    // Ambil data dengan relasi
+    $pemesanan = Pemesanan::with(['layanan', 'user', 'teknisi'])
+        ->find($pemesanan_id);
 
     if (!$pemesanan) {
-        return response()->json(['message' => 'Pemesanan tidak ditemukan'], 404);
+        return response()->json([
+            'message' => 'Pemesanan tidak ditemukan'
+        ], 404);
     }
 
-    // Update status selesai
-    $pemesanan->status = 'Selesai'; // atau status_id = StatusLayanan::SELESAI;
+    // 1️⃣ Update status pemesanan
+    $pemesanan->status = 'Selesai';
     $pemesanan->save();
 
-    // Simpan pendapatan teknisi
+    // 2️⃣ Simpan ke pendapatans (HANYA kolom yang valid)
     Pendapatan::create([
-        'teknisi_id'   => $pemesanan->teknisi_id,
-        'customer_id'  => $pemesanan->user_id,
-        'pemesanan_id' => $pemesanan->id,
-        'layanan_id'   => $pemesanan->layanan_id,
-        'jumlah'       => $pemesanan->total_harga,
-        'tanggal'      => now(),
-        'keterangan'   => "Pendapatan dari layanan: " . $pemesanan->layanan->jenis_layanan,
+        'jumlah'     => $pemesanan->total_harga,
+        'tanggal'    => now(),
+        'keterangan' => 'Pendapatan layanan '
+            . ($pemesanan->layanan->jenis_layanan ?? '-')
+            . ' oleh teknisi '
+            . ($pemesanan->teknisi->nama ?? '-')
     ]);
 
     return response()->json([
-        'message' => 'Pekerjaan berhasil diselesaikan dan pendapatan dicatat',
-        'data' => $pemesanan
-    ]);
+        'message' => 'Pekerjaan berhasil ditandai selesai',
+        'data'    => $pemesanan
+    ], 200);
 }
-
 
 
 public function pekerjaanSelesai()
