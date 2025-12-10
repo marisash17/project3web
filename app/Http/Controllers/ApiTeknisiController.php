@@ -103,26 +103,16 @@ class ApiTeknisiController extends Controller
 
     public function updateProfile(Request $request)
     {
-        $user = Auth::user();
+        $request->validate([
+            'keahlian' => 'required|string',
+            'pengalaman' => 'required|string',
+            'sertifikat' => 'nullable|image|max:2048',
+        ]);
 
-        $teknisi = Teknisi::where('user_id', $user->id)->first();
+        $teknisi = auth()->user()->teknisi;
 
-        // Jika user bukan teknisi
-        if (!$teknisi) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Anda bukan teknisi'
-            ], 400);
-        }
-
-        // Update data
-        if ($request->filled('keahlian')) {
-            $teknisi->keahlian = $request->keahlian;
-        }
-
-        if ($request->filled('pengalaman')) {
-            $teknisi->pengalaman = $request->pengalaman;
-        }
+        $teknisi->keahlian = $request->keahlian;
+        $teknisi->pengalaman = $request->pengalaman;
 
         if ($request->hasFile('sertifikat')) {
             $path = $request->file('sertifikat')->store('sertifikat', 'public');
@@ -134,7 +124,6 @@ class ApiTeknisiController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Profil teknisi berhasil diperbarui',
-            'data'    => $teknisi
-        ], 200);
+        ]);
     }
 }

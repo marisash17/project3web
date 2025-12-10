@@ -560,7 +560,7 @@
                 @foreach($recentOrders as $order)
                 <div class="order-card">
                     <div class="order-header">
-                        <div class="order-id">#{{ $order->order_number ?? 'ORD-' . $loop->iteration }}</div>
+                        <div class="order-id">{{ $order->order_number ?? 'ORD-' . $loop->iteration }}</div>
                         <div class="order-status status-{{ $order->status ?? 'pending' }}">
                             {{ $order->status ?? 'Pending' }}
                         </div>

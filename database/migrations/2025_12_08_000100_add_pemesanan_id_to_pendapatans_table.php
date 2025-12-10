@@ -12,7 +12,7 @@ return new class extends Migration
 
             // Tambah hanya kolom yang belum ada
             if (!Schema::hasColumn('pendapatans', 'pemesanan_id')) {
-                $table->unsignedBigInteger('pemesanan_id')->nullable()->after('customer_id');
+                $table->unsignedBigInteger('pemesanan_id')->nullable();
                 $table->foreign('pemesanan_id')->references('id')->on('pemesanans')->onDelete('cascade');
             }
         });
