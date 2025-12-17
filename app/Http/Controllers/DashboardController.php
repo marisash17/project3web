@@ -20,6 +20,7 @@ class DashboardController extends Controller
         $totalTeknisi    = Teknisi::count();
         $totalLayanan    = Layanan::count();
         $totalPendapatan = Pemesanan::where('status', 'Selesai')
+        ->whereHas('teknisi')
     ->sum('total_harga');
 
 

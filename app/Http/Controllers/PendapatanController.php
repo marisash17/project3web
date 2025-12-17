@@ -9,18 +9,20 @@ class PendapatanController extends Controller
 {
     public function index(Request $request)
     {
-        $bulan = $request->get('bulan'); // format optional: YYYY-MM
+        $bulan = $request->get('bulan'); // format: YYYY-MM (optional)
 
+        // =======================================
+        // 1. QUERY DATA PENDAPATAN PER TEKNISI
+        // =======================================
         $query = DB::table('teknisis')
-            ->leftJoin('users', 'users.id', '=', 'teknisis.user_id')
+            ->join('users', 'users.id', '=', 'teknisis.user_id')
             ->leftJoin('pemesanans', function ($join) {
                 $join->on('pemesanans.teknisi_id', '=', 'teknisis.id')
                      ->where('pemesanans.status', 'Selesai');
             });
 
-        // Jika ada filter bulan, lakukan di sini — parsing dilakukan DI DALAM closure
+        // Filter berdasarkan bulan
         $query->when($bulan, function ($q, $bulan) {
-            // validasi sederhana: pastikan format YYYY-MM
             if (strpos($bulan, '-') !== false) {
                 [$tahun, $bulanAngka] = explode('-', $bulan);
                 $q->whereYear('pemesanans.created_at', $tahun)
@@ -28,7 +30,6 @@ class PendapatanController extends Controller
             }
         });
 
-        // Data pendapatan per teknisi
         $pendapatanPerTeknisi = $query->selectRaw('
                 teknisis.id,
                 users.name AS nama,
@@ -39,17 +40,22 @@ class PendapatanController extends Controller
             ->groupBy('teknisis.id', 'users.name', 'teknisis.keahlian')
             ->get();
 
-        // Total pendapatan semua teknisi (ditotal dari pemesanans.total_harga)
+        // =======================================
+        // 2. TOTAL PENDAPATAN SEMUA TEKNISI
+        // (WAJIB JOIN TEKNISIS AGAR DATA SINKRON)
+        // =======================================
         $totalPendapatan = DB::table('pemesanans')
-            ->where('status', 'Selesai')
+            ->join('teknisis', 'teknisis.id', '=', 'pemesanans.teknisi_id')
+            ->join('users', 'users.id', '=', 'teknisis.user_id')
+            ->where('pemesanans.status', 'Selesai')
             ->when($bulan, function ($q, $bulan) {
                 if (strpos($bulan, '-') !== false) {
                     [$tahun, $bulanAngka] = explode('-', $bulan);
-                    $q->whereYear('created_at', $tahun)
-                      ->whereMonth('created_at', $bulanAngka);
+                    $q->whereYear('pemesanans.created_at', $tahun)
+                      ->whereMonth('pemesanans.created_at', $bulanAngka);
                 }
             })
-            ->sum('total_harga');
+            ->sum('pemesanans.total_harga');
 
         return view('admin.pendapatan.index', [
             'pendapatanPerTeknisi' => $pendapatanPerTeknisi,
